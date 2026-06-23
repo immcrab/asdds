@@ -1101,9 +1101,22 @@
         }
 
         headerAuthGatewayBtn.addEventListener('click', () => forceAuthenticationChallenge());
-        triggerLogoutSequenceBtn.addEventListener('click', () => {
-            signOut(auth).then(() => pushSystemMessageToast("Signed out successfully."));
-        });
+        if (triggerLogoutSequenceBtn) {
+            triggerLogoutSequenceBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                globalLoadingBlock.classList.remove('hidden');
+                try {
+                    await signOut(auth);
+                    pushSystemMessageToast("Signed out successfully.");
+                    // Ensure UI updates immediately
+                    userProfileContextDropdown.classList.remove('active');
+                } catch (err) {
+                    pushSystemMessageToast(`Sign out failed: ${err.message}`);
+                } finally {
+                    globalLoadingBlock.classList.add('hidden');
+                }
+            });
+        }
 
         userProfileAvatarNode.addEventListener('click', (e) => {
             e.stopPropagation();
