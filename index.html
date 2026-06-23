@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owen Studio — Creative Portfolio & Asset Hub</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #0b0f17;
+            --bg-surface: rgba(15, 22, 36, 0.95);
+            --bg-card: #131c2e;
+            --bg-input: rgba(255, 255, 255, 0.05);
+            --bg-hover: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-clean: rgba(255, 255, 255, 0.08);
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --accent-dark: #0b0f17;
+            --success: #34d399;
+            --transition-speed: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.07) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.03) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        h1, h2, h3, .brand-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(11, 15, 23, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+        }
+
+        .header-branding {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .header-search-hub {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-field-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: var(--transition-speed);
+        }
+
+        .search-field-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .header-utility-tray {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent);
+            color: var(--accent-dark);
+            font-weight: 600;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-speed);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border-clean);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-speed);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        .action-icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-clean);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-speed);
+        }
+
+        .action-icon-btn:hover {
+            color: var(--text-primary);
+            border-color: rgba(255,255,255,0.2);
+            background: var(--bg-input);
+        }
+
+        .user-identity-profile-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--border-clean);
+            cursor: pointer;
+            transition: var(--transition-speed);
+            object-fit: cover;
+        }
+
+        .user-identity-profile-circle:hover {
+            border-color: var(--accent);
+        }
+
+        /* Main Workspace Section */
+        main {
+            padding: 120px 2rem 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-banner {
+            margin-bottom: 3rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-banner h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom right, #ffffff 30%, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-banner p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .sort-filter-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(13, 22, 38, 0.4);
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-clean);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .sort-select {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            padding-right: 0.5rem;
+        }
+
+        .sort-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .tag-filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tag-chip {
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            cursor: pointer;
+            border: 1px solid var(--border-clean);
+            transition: var(--transition-speed);
+        }
+
+        .tag-chip:hover, .tag-chip.active {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .dashboard-stats-line {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Project Grid */
+        .dashboard-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-view-title {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .projects-grid-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-speed);
+        }
+
+        .project-card-node:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.3));
+        }
+
+        .project-card-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .no-thumbnail-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .project-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .project-card-badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-card-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .project-card-top-header-strip {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-title-label {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .project-abstract-description-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.7rem;
+        }
+
+        .project-card-action-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-card-action-row .btn-secondary {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+        }
+
+        .favorite-active {
+            background: rgba(56, 189, 248, 0.1) !important;
+            color: var(--accent) !important;
+            border-color: rgba(56, 189, 248, 0.2) !important;
+        }
+
+        .project-embedded-files-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            border-top: 1px solid var(--border-clean);
+            padding-top: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .embedded-file-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.15);
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+        }
+
+        .file-anchor-link-label {
+            color: var(--accent);
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 80%;
+        }
+
+        .file-anchor-link-label:hover {
+            text-decoration: underline;
+        }
+
+        /* Comments Layout */
+        .project-commenting-block {
+            margin-top: auto;
+            border-top: 1px solid var(--border-clean);
+            padding-top: 1rem;
+        }
+
+        .comments-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .view-all-comments-trigger {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .view-all-comments-trigger:hover {
+            text-decoration: underline;
+        }
+
+        .project-comment-preview-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.02);
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .project-comment-entry-form {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .project-comment-input {
+            flex: 1;
+            background: var(--bg-input);
+            border: 1px solid var(--border-clean);
+            color: var(--text-primary);
+            padding: 0.4rem 0.75rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .project-comment-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .card-metrics-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        .project-card-admin-action-deck {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            border-top: 1px solid var(--border-clean);
+            padding-top: 0.75rem;
+        }
+
+        .project-card-admin-action-deck .btn-secondary {
+            flex: 1;
+            padding: 0.4rem;
+            font-size: 0.75rem;
+            justify-content: center;
+        }
+
+        /* Modals Overlays */
+        .modal-mask-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(11, 15, 23, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-speed);
+        }
+
+        .modal-mask-layer.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-window-frame {
+            background: #0f172a;
+            border: 1px solid var(--border-clean);
+            padding: 2rem;
+            max-width: 520px;
+            width: 90%;
+            position: relative;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-window-frame.large-format {
+            max-width: 700px;
+        }
+
+        .modal-headline-title-text {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-clean);
+            padding-bottom: 0.75rem;
+        }
+
+        .modal-view-close-trigger-x-btn {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition-speed);
+        }
+
+        .modal-view-close-trigger-x-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .input-form-control-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-form-control-block label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .input-element-field {
+            background: var(--bg-input);
+            border: 1px solid var(--border-clean);
+            color: var(--text-primary);
+            padding: 0.6rem 0.8rem;
+            outline: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition-speed);
+        }
+
+        .input-element-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        textarea.input-element-field {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .popup-comprehensive-files-grid, .popup-comments-list-frame {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 0.25rem;
+        }
+
+        .popup-file-row-item, .popup-comment-node {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-clean);
+        }
+
+        .popup-comment-node {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+
+        .comment-meta-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .comment-author-string {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .comment-text-content {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .popup-file-name-string {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .popup-file-name-string:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .popup-file-size-badge {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .profile-context-dropdown-panel {
+            position: absolute;
+            top: 75px;
+            right: 2rem;
+            background: #0f172a;
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-lg);
+            width: 260px;
+            padding: 1.25rem;
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .profile-context-dropdown-panel.active {
+            display: flex;
+        }
+
+        .dropdown-identity-email-string {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            word-break: break-all;
+            border-bottom: 1px solid var(--border-clean);
+            padding-bottom: 0.75rem;
+        }
+
+        #system-notification-toast-deck {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast-banner-node {
+            background: #1e293b;
+            border-left: 4px solid var(--accent);
+            color: var(--text-primary);
+            padding: 0.75rem 1.25rem;
+            font-size: 0.85rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideIn 0.25s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        #global-loading-block {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-base);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        #global-loading-block.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner-element {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.05);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0 1rem; }
+            .header-search-hub { display: none; }
+            main { padding: 100px 1rem 40px; }
+            .projects-grid-feed { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="global-loading-block">
+        <div class="spinner-element"></div>
+    </div>
+
+    <header>
+        <div class="header-branding">
+            <span class="brand-title">Owen Studio</span>
+            <span class="brand-subtitle">Asset Hub</span>
+        </div>
+        <div class="header-search-hub">
+            <div class="search-container">
+                <input type="text" id="project-search-field" class="search-field-input" placeholder="Search projects or files...">
+            </div>
+        </div>
+        <div class="header-utility-tray">
+            <button class="action-icon-btn" id="trigger-settings-panel-btn" title="Settings" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+            <button class="btn-primary" id="header-auth-gateway-btn">Sign In</button>
+            <img id="user-profile-avatar-node" class="user-identity-profile-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Profile View" style="display: none;">
+        </div>
+    </header>
+
+    <main id="workspace-app-frame">
+        <section class="hero-banner">
+            <h1>Owen Creative Studio</h1>
+            <p>Explore elite design components, digital media, and assets. Browse instantly, sign in anytime to download.</p>
+            
+            <div class="sort-filter-row">
+                <div class="filter-group">
+                    <span>Sort By:</span>
+                    <select id="project-sort-field" class="sort-select">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="title">Alphabetical (A-Z)</option>
+                        <option value="size">Size Capacity</option>
+                        <option value="favorites">Bookmarks First</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button type="button" class="btn-secondary" id="clear-tag-filter" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; border-radius: 999px;">Reset Filters</button>
+                </div>
+            </div>
+            <div class="dashboard-stats-line" id="dashboard-stats-line">Syncing catalog...</div>
+            <div class="tag-filters-bar" id="tag-filter-chip-bar"></div>
+        </section>
+
+        <div class="profile-context-dropdown-panel" id="user-profile-context-dropdown">
+            <div class="dropdown-identity-email-string" id="user-dropdown-email-label">user@domain.com</div>
+            <button class="btn-secondary" id="trigger-logout-sequence-btn" style="width: 100%; justify-content: center;">Sign Out</button>
+        </div>
+
+        <section class="dashboard-canvas">
+            <div class="dashboard-control-header">
+                <h2 class="dashboard-view-title">Project Directory</h2>
+                <button class="btn-primary" id="admin-create-project-trigger-btn">Create New Project</button>
+            </div>
+
+            <div class="projects-grid-feed" id="projects-directory-live-root"></div>
+        </section>
+    </main>
+
+    <div class="modal-mask-layer" id="create-project-modal-mask">
+        <div class="modal-window-frame">
+            <button class="modal-view-close-trigger-x-btn" id="close-project-creation-modal-btn">✕</button>
+            <h3 class="modal-headline-title-text">Create New Project</h3>
+            <form id="project-creation-execution-form">
+                <div class="input-form-control-block">
+                    <label for="new-project-title-field">Project Name</label>
+                    <input type="text" id="new-project-title-field" class="input-element-field" placeholder="e.g. Summer Branding Kit" required autocomplete="off">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="new-project-desc-field">Description</label>
+                    <textarea id="new-project-desc-field" class="input-element-field" placeholder="Provide background context on these design files..." required autocomplete="off"></textarea>
+                </div>
+                <div class="input-form-control-block">
+                    <label for="new-project-thumbnail-field">Cover Image</label>
+                    <input type="file" id="new-project-thumbnail-field" class="input-element-field" accept="image/*">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="new-project-tags-field">Tags (separated by commas)</label>
+                    <input type="text" id="new-project-tags-field" class="input-element-field" placeholder="graphics, UI, video">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="new-project-files-field">Upload Asset Files</label>
+                    <input type="file" id="new-project-files-field" class="input-element-field" multiple required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Save & Launch Project</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-mask-layer" id="edit-project-modal-mask">
+        <div class="modal-window-frame">
+            <button class="modal-view-close-trigger-x-btn" id="close-project-editing-modal-btn">✕</button>
+            <h3 class="modal-headline-title-text">Edit Project Details</h3>
+            <form id="project-editing-execution-form">
+                <input type="hidden" id="edit-project-target-id-cache">
+                <div class="input-form-control-block">
+                    <label for="edit-project-title-field">Project Name</label>
+                    <input type="text" id="edit-project-title-field" class="input-element-field" required autocomplete="off">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="edit-project-desc-field">Description</label>
+                    <textarea id="edit-project-desc-field" class="input-element-field" required autocomplete="off"></textarea>
+                </div>
+                <div class="input-form-control-block">
+                    <label for="edit-project-thumbnail-field">Update Cover Image</label>
+                    <input type="file" id="edit-project-thumbnail-field" class="input-element-field" accept="image/*">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="edit-project-tags-field">Edit Tags</label>
+                    <input type="text" id="edit-project-tags-field" class="input-element-field" placeholder="graphics, UI, templates">
+                </div>
+                <div class="input-form-control-block">
+                    <label for="edit-project-append-files-field">Add More Files</label>
+                    <input type="file" id="edit-project-append-files-field" class="input-element-field" multiple>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Apply Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-mask-layer" id="project-comments-modal-mask">
+        <div class="modal-window-frame">
+            <button class="modal-view-close-trigger-x-btn" id="close-comments-modal-btn">✕</button>
+            <h3 class="modal-headline-title-text" id="comments-modal-project-title">Discussion Feed</h3>
+            <div class="popup-comments-list-frame" id="popup-comments-target-root"></div>
+            <form id="popup-modal-comment-form">
+                <input type="hidden" id="popup-comment-target-project-id">
+                <div class="input-form-control-block">
+                    <input type="text" id="popup-comment-text-field" class="input-element-field" placeholder="Write something professional..." required>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-mask-layer" id="comprehensive-files-viewer-modal-mask">
+        <div class="modal-window-frame large-format">
+            <button class="modal-view-close-trigger-x-btn" id="close-files-viewer-modal-btn">✕</button>
+            <h3 class="modal-headline-title-text" id="files-viewer-project-headline-title">Asset Inventory</h3>
+            <div class="popup-comprehensive-files-grid" id="comprehensive-files-popup-target-root"></div>
+        </div>
+    </div>
+
+    <div class="modal-mask-layer" id="workspace-settings-modal-mask">
+        <div class="modal-window-frame">
+            <button class="modal-view-close-trigger-x-btn" id="close-settings-modal-btn">✕</button>
+            <h3 class="modal-headline-title-text">Profile Customization</h3>
+            <form id="workspace-settings-execution-form">
+                <div class="input-form-control-block">
+                    <label for="settings-avatar-url-field">Custom Avatar Image URL</label>
+                    <input type="text" id="settings-avatar-url-field" class="input-element-field" placeholder="https://images.unsplash.com/.../photo" autocomplete="off">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Update Avatar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="system-notification-toast-deck"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { getDatabase, ref as dRef, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJ2QeH6T4bjKk1fXdfPTNJAD2lAjZXZwk",
+            authDomain: "scribbledev.firebaseapp.com",
+            projectId: "scribbledev",
+            storageBucket: "scribbledev.firebasestorage.app",
+            messagingSenderId: "580074888715",
+            appId: "1:580074888715:web:49c18e1770ae5b8632710e",
+            measurementId: "G-V164XBTCVL",
+            databaseURL: "https://scribbledev-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        const database = getDatabase(app);
+        const googleOAuthProvider = new GoogleAuthProvider();
+
+        let activeAuthenticatedUserContext = null;
+        let internalProjectsDatabaseCache = [];
+        let systemSearchQueryPhrase = "";
+        let activeTagFilter = "";
+        let currentProjectSortMode = "newest";
+        const favoriteProjectRegistry = new Set(JSON.parse(localStorage.getItem('studio_favorite_projects') || '[]'));
+
+        const globalLoadingBlock = document.getElementById('global-loading-block');
+        const headerAuthGatewayBtn = document.getElementById('header-auth-gateway-btn');
+        const userProfileAvatarNode = document.getElementById('user-profile-avatar-node');
+        const userProfileContextDropdown = document.getElementById('user-profile-context-dropdown');
+        const triggerLogoutSequenceBtn = document.getElementById('trigger-logout-sequence-btn');
+        const userDropdownEmailLabel = document.getElementById('user-dropdown-email-label');
+        const adminCreateProjectTriggerBtn = document.getElementById('admin-create-project-trigger-btn');
+        const projectsDirectoryLiveRoot = document.getElementById('projects-directory-live-root');
+        const projectSearchField = document.getElementById('project-search-field');
+        const projectSortField = document.getElementById('project-sort-field');
+        const tagFilterChipBar = document.getElementById('tag-filter-chip-bar');
+        const clearTagFilterBtn = document.getElementById('clear-tag-filter');
+        const dashboardStatsLine = document.getElementById('dashboard-stats-line');
+        const triggerSettingsPanelBtn = document.getElementById('trigger-settings-panel-btn');
+
+        const createProjectModalMask = document.getElementById('create-project-modal-mask');
+        const projectCreationExecutionForm = document.getElementById('project-creation-execution-form');
+        const closeProjectCreationModalBtn = document.getElementById('close-project-creation-modal-btn');
+        const editProjectModalMask = document.getElementById('edit-project-modal-mask');
+        const projectEditingExecutionForm = document.getElementById('project-editing-execution-form');
+        const closeProjectEditingModalBtn = document.getElementById('close-project-editing-modal-btn');
+        const editProjectTargetIdCache = document.getElementById('edit-project-target-id-cache');
+        const editProjectTitleField = document.getElementById('edit-project-title-field');
+        const editProjectDescField = document.getElementById('edit-project-desc-field');
+        const editProjectTagsField = document.getElementById('edit-project-tags-field');
+        
+        const projectCommentsModalMask = document.getElementById('project-comments-modal-mask');
+        const closeCommentsModalBtn = document.getElementById('close-comments-modal-btn');
+        const commentsModalProjectTitle = document.getElementById('comments-modal-project-title');
+        const popupCommentsTargetRoot = document.getElementById('popup-comments-target-root');
+        const popupModalCommentForm = document.getElementById('popup-modal-comment-form');
+        const popupCommentTargetProjectId = document.getElementById('popup-comment-target-project-id');
+        const popupCommentTextField = document.getElementById('popup-comment-text-field');
+
+        const comprehensiveFilesViewerModalMask = document.getElementById('comprehensive-files-viewer-modal-mask');
+        const closeFilesViewerModalBtn = document.getElementById('close-files-viewer-modal-btn');
+        const filesViewerProjectHeadlineTitle = document.getElementById('files-viewer-project-headline-title');
+        const comprehensiveFilesPopupTargetRoot = document.getElementById('comprehensive-files-popup-target-root');
+        
+        const workspaceSettingsModalMask = document.getElementById('workspace-settings-modal-mask');
+        const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+        const workspaceSettingsExecutionForm = document.getElementById('workspace-settings-execution-form');
+        const settingsAvatarUrlField = document.getElementById('settings-avatar-url-field');
+        const systemNotificationToastDeck = document.getElementById('system-notification-toast-deck');
+
+        function pushSystemMessageToast(messageString) {
+            const toastNode = document.createElement('div');
+            toastNode.className = 'toast-banner-node';
+            toastNode.textContent = messageString;
+            systemNotificationToastDeck.appendChild(toastNode);
+            setTimeout(() => {
+                toastNode.style.opacity = '0';
+                toastNode.style.transition = 'opacity 0.25s ease';
+                setTimeout(() => toastNode.remove(), 250);
+            }, 4000);
+        }
+
+        function forceAuthenticationChallenge() {
+            pushSystemMessageToast("Please sign in to complete this action.");
+            signInWithPopup(auth, googleOAuthProvider).catch((err) => {
+                pushSystemMessageToast(`Authentication aborted: ${err.message}`);
+            });
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                activeAuthenticatedUserContext = user;
+                userDropdownEmailLabel.textContent = user.email;
+                reconcileUserVisualProfilesData();
+                
+                headerAuthGatewayBtn.style.display = 'none';
+                userProfileAvatarNode.style.display = 'block';
+                triggerSettingsPanelBtn.style.display = 'flex';
+            } else {
+                activeAuthenticatedUserContext = null;
+                headerAuthGatewayBtn.style.display = 'block';
+                userProfileAvatarNode.style.display = 'none';
+                triggerSettingsPanelBtn.style.display = 'none';
+                userProfileContextDropdown.classList.remove('active');
+            }
+            renderWorkspaceProjectDeckMatrix();
+            globalLoadingBlock.classList.add('hidden');
+        });
+
+        function reconcileUserVisualProfilesData() {
+            const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
+            const customizedUrlPointer = localStorage.getItem(cacheKey);
+            userProfileAvatarNode.src = customizedUrlPointer || activeAuthenticatedUserContext.photoURL || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=120";
+        }
+
+        headerAuthGatewayBtn.addEventListener('click', () => forceAuthenticationChallenge());
+        triggerLogoutSequenceBtn.addEventListener('click', () => {
+            signOut(auth).then(() => pushSystemMessageToast("Signed out successfully."));
+        });
+
+        userProfileAvatarNode.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userProfileContextDropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', () => userProfileContextDropdown.classList.remove('active'));
+
+        adminCreateProjectTriggerBtn.addEventListener('click', () => createProjectModalMask.classList.add('active'));
+        closeProjectCreationModalBtn.addEventListener('click', () => createProjectModalMask.classList.remove('active'));
+        closeProjectEditingModalBtn.addEventListener('click', () => editProjectModalMask.classList.remove('active'));
+        closeFilesViewerModalBtn.addEventListener('click', () => comprehensiveFilesViewerModalMask.classList.remove('active'));
+        closeCommentsModalBtn.addEventListener('click', () => projectCommentsModalMask.classList.remove('active'));
+        
+        triggerSettingsPanelBtn.addEventListener('click', () => {
+            const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
+            settingsAvatarUrlField.value = localStorage.getItem(cacheKey) || "";
+            workspaceSettingsModalMask.classList.add('active');
+        });
+        closeSettingsModalBtn.addEventListener('click', () => workspaceSettingsModalMask.classList.remove('active'));
+
+        workspaceSettingsExecutionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const urlString = settingsAvatarUrlField.value.trim();
+            const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
+            if (urlString) localStorage.setItem(cacheKey, urlString);
+            else localStorage.removeItem(cacheKey);
+            reconcileUserVisualProfilesData();
+            workspaceSettingsModalMask.classList.remove('active');
+            pushSystemMessageToast("Profile settings saved successfully.");
+        });
+
+        projectCreationExecutionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('new-project-title-field').value.trim();
+            const description = document.getElementById('new-project-desc-field').value.trim();
+            const chosenFiles = document.getElementById('new-project-files-field').files;
+            const thumbnailFile = document.getElementById('new-project-thumbnail-field').files[0];
+            const tags = document.getElementById('new-project-tags-field').value.split(',').map(tag => tag.trim()).filter(Boolean);
+
+            createProjectModalMask.classList.remove('active');
+            globalLoadingBlock.classList.remove('hidden');
+
+            try {
+                const projectUniqueId = `proj_${Date.now()}`;
+                const fileRecordsDictionary = {};
+                let thumbnailRecord = null;
+
+                if (thumbnailFile) {
+                    const thumbPath = `vault/${projectUniqueId}/thumbnail_${Date.now()}_${thumbnailFile.name}`;
+                    await uploadBytes(sRef(storage, thumbPath), thumbnailFile);
+                    const thumbUrl = await getDownloadURL(sRef(storage, thumbPath));
+                    thumbnailRecord = { name: thumbnailFile.name, url: thumbUrl, path: thumbPath, size: thumbnailFile.size };
+                }
+
+                for (let idx = 0; idx < chosenFiles.length; idx++) {
+                    const targetFile = chosenFiles[idx];
+                    const storageLocationPath = `vault/${projectUniqueId}/${Date.now()}_${targetFile.name}`;
+                    await uploadBytes(sRef(storage, storageLocationPath), targetFile);
+                    const fileDownloadUrl = await getDownloadURL(sRef(storage, storageLocationPath));
+                    fileRecordsDictionary[`file_${Date.now()}_${idx}`] = { name: targetFile.name, url: fileDownloadUrl, path: storageLocationPath, size: targetFile.size };
+                }
+
+                await set(dRef(database, `workspace_projects/${projectUniqueId}`), {
+                    id: projectUniqueId, title, description, timestamp: Date.now(), files: fileRecordsDictionary, thumbnail: thumbnailRecord, tags, comments: {}
+                });
+
+                pushSystemMessageToast("Project successfully uploaded and live.");
+                projectCreationExecutionForm.reset();
+            } catch (err) {
+                pushSystemMessageToast(`Upload Error: ${err.message}`);
+            } finally {
+                globalLoadingBlock.classList.add('hidden');
+            }
+        });
+
+        projectEditingExecutionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const targetProjectId = editProjectTargetIdCache.value;
+            const updatedTitle = editProjectTitleField.value.trim();
+            const updatedDesc = editProjectDescField.value.trim();
+            const appendedFiles = document.getElementById('edit-project-append-files-field').files;
+            const thumbnailFile = document.getElementById('edit-project-thumbnail-field').files[0];
+            const updatedTags = editProjectTagsField.value.split(',').map(tag => tag.trim()).filter(Boolean);
+
+            editProjectModalMask.classList.remove('active');
+            globalLoadingBlock.classList.remove('hidden');
+
+            try {
+                const updatePayload = { title: updatedTitle, description: updatedDesc, tags: updatedTags };
+
+                if (thumbnailFile) {
+                    const thumbPath = `vault/${targetProjectId}/thumbnail_${Date.now()}_${thumbnailFile.name}`;
+                    await uploadBytes(sRef(storage, thumbPath), thumbnailFile);
+                    const thumbUrl = await getDownloadURL(sRef(storage, thumbPath));
+                    updatePayload.thumbnail = { name: thumbnailFile.name, url: thumbUrl, path: thumbPath, size: thumbnailFile.size };
+                }
+
+                await update(dRef(database, `workspace_projects/${targetProjectId}`), updatePayload);
+
+                if (appendedFiles.length > 0) {
+                    for (let idx = 0; idx < appendedFiles.length; idx++) {
+                        const targetFile = appendedFiles[idx];
+                        const storageLocationPath = `vault/${targetProjectId}/${Date.now()}_${targetFile.name}`;
+                        await uploadBytes(sRef(storage, storageLocationPath), targetFile);
+                        const fileDownloadUrl = await getDownloadURL(sRef(storage, storageLocationPath));
+                        await set(dRef(database, `workspace_projects/${targetProjectId}/files/file_${Date.now()}_${idx}`), {
+                            name: targetFile.name, url: fileDownloadUrl, path: storageLocationPath, size: targetFile.size
+                        });
+                    }
+                }
+
+                pushSystemMessageToast("Project updated successfully.");
+                projectEditingExecutionForm.reset();
+            } catch (err) {
+                pushSystemMessageToast(`Update error: ${err.message}`);
+            } finally {
+                globalLoadingBlock.classList.add('hidden');
+            }
+        });
+
+        onValue(dRef(database, 'workspace_projects'), (snapshot) => {
+            const incomingDataBlock = snapshot.val();
+            internalProjectsDatabaseCache = incomingDataBlock ? Object.values(incomingDataBlock) : [];
+            
+            // If the database is entirely empty when uploaded, generate a fallback placeholder project so it always shows content
+            if (internalProjectsDatabaseCache.length === 0) {
+                internalProjectsDatabaseCache = [{
+                    id: "default_placeholder",
+                    title: "Welcome to Owen Studio Portfolio",
+                    description: "This is a temporary placeholder setup showing your production pipeline. Click 'Create New Project' above to inject live assets into your workspace tracker.",
+                    timestamp: Date.now(),
+                    tags: ["studio", "assets"],
+                    files: { "f1": { name: "demo-style-guide.pdf", size: 4500000, url: "#" } },
+                    comments: {}
+                }];
+            }
+
+            internalProjectsDatabaseCache.sort((a, b) => b.timestamp - a.timestamp);
+            renderWorkspaceProjectDeckMatrix();
+        });
+
+        projectSearchField.addEventListener('input', (e) => {
+            systemSearchQueryPhrase = e.target.value.toLowerCase().trim();
+            renderWorkspaceProjectDeckMatrix();
+        });
+
+        projectSortField.addEventListener('change', (e) => {
+            currentProjectSortMode = e.target.value;
+            renderWorkspaceProjectDeckMatrix();
+        });
+
+        clearTagFilterBtn.addEventListener('click', () => {
+            activeTagFilter = "";
+            renderWorkspaceProjectDeckMatrix();
+        });
+
+        function renderWorkspaceProjectDeckMatrix() {
+            projectsDirectoryLiveRoot.innerHTML = '';
+
+            let itemsFiltered = internalProjectsDatabaseCache.filter(project => {
+                const nameMatches = project.title.toLowerCase().includes(systemSearchQueryPhrase);
+                const descMatches = project.description.toLowerCase().includes(systemSearchQueryPhrase);
+                const fileMatches = project.files && Object.values(project.files).some(f => f.name.toLowerCase().includes(systemSearchQueryPhrase));
+                return (nameMatches || descMatches || fileMatches) && (!activeTagFilter || (project.tags || []).includes(activeTagFilter));
+            });
+
+            const allTags = new Set();
+            internalProjectsDatabaseCache.forEach(p => (p.tags || []).forEach(t => allTags.add(t)));
+            tagFilterChipBar.innerHTML = '';
+            Array.from(allTags).sort().forEach(tag => {
+                const chip = document.createElement('button');
+                chip.className = 'tag-chip' + (activeTagFilter === tag ? ' active' : '');
+                chip.textContent = tag;
+                chip.onclick = () => { activeTagFilter = activeTagFilter === tag ? '' : tag; renderWorkspaceProjectDeckMatrix(); };
+                tagFilterChipBar.appendChild(chip);
+            });
+
+            const totalFiles = internalProjectsDatabaseCache.reduce((acc, p) => acc + Object.keys(p.files || {}).length, 0);
+            dashboardStatsLine.textContent = `Displaying ${internalProjectsDatabaseCache.length} active projects featuring ${totalFiles} downloadable source files.`;
+
+            itemsFiltered.sort((a, b) => {
+                if (currentProjectSortMode === 'oldest') return a.timestamp - b.timestamp;
+                if (currentProjectSortMode === 'title') return a.title.localeCompare(b.title);
+                if (currentProjectSortMode === 'size') {
+                    const getWeight = p => Object.values(p.files || {}).reduce((s, f) => s + (f.size || 0), 0);
+                    return getWeight(b) - getWeight(a);
+                }
+                if (currentProjectSortMode === 'favorites') return (favoriteProjectRegistry.has(b.id) ? 1 : 0) - (favoriteProjectRegistry.has(a.id) ? 1 : 0);
+                return b.timestamp - a.timestamp;
+            });
+
+            if (itemsFiltered.length === 0) {
+                projectsDirectoryLiveRoot.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:4rem; color:var(--text-muted); border:1px dashed var(--border-clean); border-radius:var(--radius-lg);">No matching projects found. Clear your filters or try a different search.</div>`;
+                return;
+            }
+
+            itemsFiltered.forEach(project => {
+                const cardNode = document.createElement('div');
+                cardNode.className = 'project-card-node';
+                
+                const filesList = Object.entries(project.files || {});
+                const totalBytes = filesList.reduce((sum, [_, f]) => sum + (f.size || 0), 0);
+                const projectSizeMb = (totalBytes / (1024 * 1024)).toFixed(2);
+                
+                let fileRowsHtml = '';
+                filesList.slice(0, 3).forEach(([fKey, f]) => {
+                    fileRowsHtml += `
+                        <div class="embedded-file-row-item">
+                            <a href="#" class="file-anchor-link-label action-restricted-download" data-url="${f.url}" data-name="${f.name}">${escapeHtml(f.name)}</a>
+                            <span style="cursor:pointer; color:var(--text-muted);" class="action-file-delete" data-proj="${project.id}" data-file="${fKey}">✕</span>
+                        </div>`;
+                });
+                if (filesList.length > 3) {
+                    fileRowsHtml += `<div style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding-top:4px;">+ ${filesList.length - 3} more files available</div>`;
+                }
+
+                const commentsArr = Object.values(project.comments || {});
+                const finalComment = commentsArr.length > 0 ? commentsArr[commentsArr.length - 1] : null;
+
+                cardNode.innerHTML = `
+                    <div class="thumbnail-container">
+                        ${project.thumbnail ? `<img src="${escapeHtml(project.thumbnail.url)}" class="project-card-thumbnail" alt="Cover art">` : `<div class="no-thumbnail-placeholder">No preview thumbnail attached</div>`}
+                    </div>
+                    <div class="project-card-body">
+                        <div class="project-card-badge-row">${(project.tags || []).map(t => `<span class="project-card-badge">${escapeHtml(t)}</span>`).join('')}</div>
+                        <div class="project-card-top-header-strip">
+                            <div class="project-title-label">${escapeHtml(project.title)}</div>
+                            <span style="font-size:0.75rem; color:var(--text-muted); cursor:pointer;" class="action-view-manifest" data-id="${project.id}">All Files ➔</span>
+                        </div>
+                        <div class="project-abstract-description-text">${escapeHtml(project.description)}</div>
+                        
+                        <div class="project-card-action-row">
+                            <button class="btn-secondary action-toggle-favorite ${favoriteProjectRegistry.has(project.id) ? 'favorite-active' : ''}" data-id="${project.id}">Bookmark</button>
+                            <button class="btn-secondary action-download-pack" data-id="${project.id}" data-zip="false">Get Files</button>
+                            <button class="btn-secondary action-download-pack" data-id="${project.id}" data-zip="true">Download ZIP</button>
+                        </div>
+
+                        <div class="project-embedded-files-list-container">${fileRowsHtml || '<div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">No source files pinned to this project.</div>'}</div>
+
+                        <div class="project-commenting-block">
+                            <div class="comments-header-row">
+                                <span>Comments (${commentsArr.length})</span>
+                                <span class="view-all-comments-trigger" data-id="${project.id}">Open Feed</span>
+                            </div>
+                            <div class="project-comment-preview-text">${finalComment ? `<strong>${escapeHtml(finalComment.author.split('@')[0])}:</strong> ${escapeHtml(finalComment.text)}` : 'No comments left yet. Start the conversation!'}</div>
+                            <form class="project-comment-entry-form" data-id="${project.id}">
+                                <input type="text" class="project-comment-input" placeholder="Type a comment..." required>
+                                <button type="submit" class="btn-secondary" style="padding:0.4rem 0.75rem;">Post</button>
+                            </form>
+                        </div>
+
+                        <div class="card-metrics-footer">
+                            <span>SIZE: ${projectSizeMb} MB</span>
+                            <span style="color:var(--accent); cursor:pointer;" class="action-share-link" data-title="${escapeHtml(project.title)}">Share Link</span>
+                        </div>
+
+                        <div class="project-card-admin-action-deck">
+                            <button class="btn-secondary action-admin-edit" data-id="${project.id}">Edit Project</button>
+                            <button class="btn-secondary action-admin-delete" data-id="${project.id}" style="color:#f87171;">Delete</button>
+                        </div>
+                    </div>`;
+
+                projectsDirectoryLiveRoot.appendChild(cardNode);
+            });
+
+            bindInterfaceInteractionsDelegations();
+        }
+
+        function bindInterfaceInteractionsDelegations() {
+            document.querySelectorAll('.action-restricted-download').forEach(a => {
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    if (a.dataset.url === "#") return;
+                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                    const dl = document.createElement('a'); dl.href = a.dataset.url; dl.download = a.dataset.name; dl.target = '_blank'; dl.click();
+                };
+            });
+
+            document.querySelectorAll('.action-download-pack').forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.dataset.id === "default_placeholder") return;
+                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                    triggerBulkDownloadSequence(btn.dataset.id, btn.dataset.zip === "true");
+                };
+            });
+
+            document.querySelectorAll('.action-toggle-favorite').forEach(btn => {
+                btn.onclick = () => {
+                    const id = btn.dataset.id;
+                    if (favoriteProjectRegistry.has(id)) favoriteProjectRegistry.delete(id);
+                    else favoriteProjectRegistry.add(id);
+                    localStorage.setItem('studio_favorite_projects', JSON.stringify(Array.from(favoriteProjectRegistry)));
+                    renderWorkspaceProjectDeckMatrix();
+                };
+            });
+
+            document.querySelectorAll('.action-share-link').forEach(span => {
+                span.onclick = () => {
+                    navigator.clipboard.writeText(window.location.href);
+                    pushSystemMessageToast(`Portfolio link copied: ${span.dataset.title}`);
+                };
+            });
+
+            document.querySelectorAll('.view-all-comments-trigger').forEach(span => {
+                span.onclick = () => launchDiscussionFeedModal(span.dataset.id);
+            });
+
+            document.querySelectorAll('.project-comment-entry-form').forEach(form => {
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    if (form.dataset.id === "default_placeholder") { pushSystemMessageToast("Please create a live project to test live database commenting."); return; }
+                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                    const input = form.querySelector('.project-comment-input');
+                    executePostCommentPipeline(form.dataset.id, input.value.trim(), () => { input.value = ''; });
+                };
+            });
+
+            document.querySelectorAll('.action-view-manifest').forEach(span => {
+                span.onclick = () => {
+                    const p = internalProjectsDatabaseCache.find(x => x.id === span.dataset.id);
+                    if (!p) return;
+                    filesViewerProjectHeadlineTitle.textContent = `${p.title} — File Inventory`;
+                    comprehensiveFilesPopupTargetRoot.innerHTML = '';
+                    Object.values(p.files || {}).forEach(f => {
+                        const row = document.createElement('div'); row.className = 'popup-file-row-item';
+                        row.innerHTML = `<span class="popup-file-name-string">${escapeHtml(f.name)}</span><span class="popup-file-size-badge">${(f.size/(1024*1024)).toFixed(2)} MB</span>`;
+                        comprehensiveFilesPopupTargetRoot.appendChild(row);
+                    });
+                    comprehensiveFilesViewerModalMask.classList.add('active');
+                };
+            });
+
+            document.querySelectorAll('.action-admin-edit').forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.dataset.id === "default_placeholder") { adminCreateProjectTriggerBtn.click(); return; }
+                    const p = internalProjectsDatabaseCache.find(x => x.id === btn.dataset.id);
+                    if (!p) return;
+                    editProjectTargetIdCache.value = p.id;
+                    editProjectTitleField.value = p.title;
+                    editProjectDescField.value = p.description;
+                    editProjectTagsField.value = (p.tags || []).join(', ');
+                    editProjectModalMask.classList.add('active');
+                };
+            });
+
+            document.querySelectorAll('.action-admin-delete').forEach(btn => {
+                btn.onclick = async () => {
+                    if (btn.dataset.id === "default_placeholder") return;
+                    if (confirm("Are you sure you want to completely delete this project?")) {
+                        globalLoadingBlock.classList.remove('hidden');
+                        const p = internalProjectsDatabaseCache.find(x => x.id === btn.dataset.id);
+                        if (p && p.files) {
+                            for (let f of Object.values(p.files)) { try { await deleteObject(sRef(storage, f.path)); } catch(e){} }
+                        }
+                        await remove(dRef(database, `workspace_projects/${btn.dataset.id}`));
+                        pushSystemMessageToast("Project removed successfully.");
+                        globalLoadingBlock.classList.add('hidden');
+                    }
+                };
+            });
+
+            document.querySelectorAll('.action-file-delete').forEach(span => {
+                span.onclick = async () => {
+                    if (span.dataset.proj === "default_placeholder") return;
+                    if (confirm("Delete this individual file?")) {
+                        globalLoadingBlock.classList.remove('hidden');
+                        const p = internalProjectsDatabaseCache.find(x => x.id === span.dataset.proj);
+                        const file = p.files[span.dataset.file];
+                        try { await deleteObject(sRef(storage, file.path)); } catch(e){}
+                        await remove(dRef(database, `workspace_projects/${span.dataset.proj}/files/${span.dataset.file}`));
+                        pushSystemMessageToast("File deleted.");
+                        globalLoadingBlock.classList.add('hidden');
+                    }
+                };
+            });
+        }
+
+        function launchDiscussionFeedModal(projectId) {
+            const project = internalProjectsDatabaseCache.find(x => x.id === projectId);
+            if (!project) return;
+            
+            commentsModalProjectTitle.textContent = `${project.title} — Comments`;
+            popupCommentTargetProjectId.value = projectId;
+            popupCommentTextField.value = '';
+            
+            if (projectId === "default_placeholder") {
+                popupCommentsTargetRoot.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:0.9rem;">This is a temporary project. Build a new project to try live feedback threads.</div>`;
+                projectCommentsModalMask.classList.add('active');
+                return;
+            }
+
+            onValue(dRef(database, `workspace_projects/${projectId}/comments`), (snapshot) => {
+                popupCommentsTargetRoot.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    popupCommentsTargetRoot.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:0.9rem;">No comments yet. Write one below!</div>`;
+                    return;
+                }
+                Object.values(data).forEach(c => {
+                    const block = document.createElement('div'); block.className = 'popup-comment-node';
+                    block.innerHTML = `
+                        <div class="comment-meta-row">
+                            <span class="comment-author-string">${escapeHtml(c.author.split('@')[0])}</span>
+                            <span>${new Date(c.timestamp).toLocaleDateString()}</span>
+                        </div>
+                        <div class="comment-text-content">${escapeHtml(c.text)}</div>`;
+                    popupCommentsTargetRoot.appendChild(block);
+                });
+                popupCommentsTargetRoot.scrollTop = popupCommentsTargetRoot.scrollHeight;
+            });
+            projectCommentsModalMask.classList.add('active');
+        }
+
+        async function executePostCommentPipeline(projectId, val, callback) {
+            try {
+                const nodeRef = push(dRef(database, `workspace_projects/${projectId}/comments`));
+                await set(nodeRef, { author: activeAuthenticatedUserContext.email, text: val, timestamp: Date.now() });
+                pushSystemMessageToast("Comment posted.");
+                if (callback) callback();
+            } catch(e) { pushSystemMessageToast(`Failed to post comment: ${e.message}`); }
+        }
+
+        popupModalCommentForm.onsubmit = (e) => {
+            e.preventDefault();
+            if (popupCommentTargetProjectId.value === "default_placeholder") return;
+            if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+            executePostCommentPipeline(popupCommentTargetProjectId.value, popupCommentTextField.value.trim(), () => {
+                popupCommentTextField.value = '';
+            });
+        };
+
+        async function triggerBulkDownloadSequence(projectId, zipIt) {
+            const project = internalProjectsDatabaseCache.find(x => x.id === projectId);
+            if (!project || !project.files) return;
+            const fileList = Object.values(project.files);
+
+            if (!zipIt) {
+                fileList.forEach(f => {
+                    const a = document.createElement('a'); a.href = f.url; a.download = f.name; a.target = '_blank'; a.click();
+                });
+                return;
+            }
+
+            globalLoadingBlock.classList.remove('hidden');
+            try {
+                const zip = new JSZip();
+                for (const file of fileList) {
+                    const res = await fetch(file.url);
+                    if (!res.ok) throw new Error();
+                    zip.file(file.name, await res.blob());
+                }
+                const blob = await zip.generateAsync({ type: 'blob' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                a.download = `${project.title.replace(/[^a-zA-Z0-9]/g, '_')}_assets.zip`;
+                a.click();
+                pushSystemMessageToast("ZIP download started successfully.");
+            } catch(e) { pushSystemMessageToast("Error generating compressed ZIP package."); }
+            globalLoadingBlock.classList.add('hidden');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
