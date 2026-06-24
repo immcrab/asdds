@@ -1185,7 +1185,6 @@
         let activeTagFilter = "";
         let currentProjectSortMode = "newest";
         
-        // Feature 5 Pagination Index Trackers
         let activeRenderingLimitCount = 6;
 
         const favoriteProjectRegistry = new Set(JSON.parse(localStorage.getItem('studio_favorite_projects') || '[]'));
@@ -1205,7 +1204,6 @@
         const dashboardStatsLine = document.getElementById('dashboard-stats-line');
         const triggerSettingsPanelBtn = document.getElementById('trigger-settings-panel-btn');
 
-        // Feature UI Targets
         const projectSpotlightRoot = document.getElementById('project-spotlight-root');
         const paginationLoadMoreContainer = document.getElementById('pagination-load-more-container');
         const loadMoreActionTriggerBtn = document.getElementById('load-more-action-trigger-btn');
@@ -1241,23 +1239,18 @@
         const settingsAvatarUrlField = document.getElementById('settings-avatar-url-field');
         const systemNotificationToastDeck = document.getElementById('system-notification-toast-deck');
 
-        // Feature 2: Bootloader Style Hook
         (function initialStyleEvaluation() {
             const preservedColor = localStorage.getItem('studio_ui_accent_hex') || '#38bdf8';
             document.documentElement.style.setProperty('--accent', preservedColor);
-            
-            // Generate clean reactive translucent overlay calculations
             const parsedGlowValue = preservedColor.replace('#', '');
             const numVal = parseInt(parsedGlowValue, 16);
             const r = (numVal >> 16) & 255; const g = (numVal >> 8) & 255; const b = numVal & 255;
             document.documentElement.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.15)`);
         })();
 
-        // Feature 4 Extension Evaluator
         function evaluateFileFormatCategory(filenameString) {
             if(!filenameString) return { label: 'FILE', variant: 'ext-gen' };
             const computedExt = filenameString.split('.').pop().toLowerCase();
-            
             if(['png','jpg','jpeg','gif','svg','webp','tiff'].includes(computedExt)) return { label: 'IMG', variant: 'ext-img' };
             if(['zip','rar','tar','gz','7z','pkg'].includes(computedExt)) return { label: 'ZIP', variant: 'ext-zip' };
             if(['pdf'].includes(computedExt)) return { label: 'PDF', variant: 'ext-pdf' };
@@ -1266,7 +1259,6 @@
             return { label: computedExt.substring(0,4).toUpperCase(), variant: 'ext-gen' };
         }
 
-        // Feature 3 Live Database Logger Sync
         async function logAssetDownloadEventMetric(targetProjectId) {
             if(targetProjectId === "default_placeholder") return;
             try {
@@ -1304,7 +1296,6 @@
                 activeAuthenticatedUserContext = user;
                 userDropdownEmailLabel.textContent = user.email;
                 reconcileUserVisualProfilesData();
-                
                 headerAuthGatewayBtn.style.display = 'none';
                 userProfileAvatarNode.style.display = 'block';
                 triggerSettingsPanelBtn.style.display = 'flex';
@@ -1316,7 +1307,6 @@
                     adminCreateProjectTriggerBtn.style.display = 'none';
                     document.body.classList.remove('is-admin');
                 }
-
             } else {
                 activeAuthenticatedUserContext = null;
                 headerAuthGatewayBtn.style.display = 'block';
@@ -1377,11 +1367,9 @@
             e.preventDefault();
             const urlString = settingsAvatarUrlField.value.trim();
             const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
-            
             if (urlString) localStorage.setItem(cacheKey, urlString);
             else localStorage.removeItem(cacheKey);
             
-            // Feature 2 Accent Execution Layer
             const assignedColorValue = settingsAccentThemeField.value;
             localStorage.setItem('studio_ui_accent_hex', assignedColorValue);
             document.documentElement.style.setProperty('--accent', assignedColorValue);
@@ -1457,7 +1445,6 @@
 
             try {
                 const updatePayload = { title: updatedTitle, description: updatedDesc, tags: updatedTags };
-
                 if (thumbnailFile) {
                     const thumbPath = `vault/${targetProjectId}/thumbnail_${Date.now()}_${thumbnailFile.name}`;
                     await uploadBytes(sRef(storage, thumbPath), thumbnailFile);
@@ -1478,7 +1465,6 @@
                         });
                     }
                 }
-
                 pushSystemMessageToast("Project updated successfully.");
                 projectEditingExecutionForm.reset();
             } catch (err) {
@@ -1505,14 +1491,13 @@
                     featured: false
                 }];
             }
-
             internalProjectsDatabaseCache.sort((a, b) => b.timestamp - a.timestamp);
             renderWorkspaceProjectDeckMatrix();
         });
 
         projectSearchField.addEventListener('input', (e) => {
             systemSearchQueryPhrase = e.target.value.toLowerCase().trim();
-            activeRenderingLimitCount = 6; // Reset page view counts on search actions
+            activeRenderingLimitCount = 6; 
             renderWorkspaceProjectDeckMatrix();
         });
 
@@ -1527,7 +1512,6 @@
             renderWorkspaceProjectDeckMatrix();
         });
 
-        // Feature 5 Trigger Connection
         loadMoreActionTriggerBtn.addEventListener('click', () => {
             activeRenderingLimitCount += 6;
             renderWorkspaceProjectDeckMatrix();
@@ -1537,7 +1521,6 @@
             projectsDirectoryLiveRoot.innerHTML = '';
             projectSpotlightRoot.innerHTML = '';
 
-            // Filter Matrix Strategy Logic 
             let itemsFiltered = internalProjectsDatabaseCache.filter(project => {
                 const nameMatches = project.title.toLowerCase().includes(systemSearchQueryPhrase);
                 const descMatches = project.description.toLowerCase().includes(systemSearchQueryPhrase);
@@ -1545,13 +1528,27 @@
                 return (nameMatches || descMatches || fileMatches) && (!activeTagFilter || (project.tags || []).includes(activeTagFilter));
             });
 
-            // Feature 1 Extraction Filter Context
             const highSpotlightTarget = itemsFiltered.find(item => item.featured === true);
             if(highSpotlightTarget && !systemSearchQueryPhrase && !activeTagFilter) {
-                // Remove spotlight item from standard grid array lists to avoid visual redundancy
                 itemsFiltered = itemsFiltered.filter(node => node.id !== highSpotlightTarget.id);
                 
-                const filesSlice = Object.values(highSpotlightTarget.files || {});
+                const spotlightFilesList = Object.entries(highSpotlightTarget.files || {});
+                let spotlightFilesHtml = '';
+                spotlightFilesList.slice(0, 3).forEach(([fKey, f]) => {
+                    const evaluatedBadge = evaluateFileFormatCategory(f.name);
+                    spotlightFilesHtml += `
+                        <div class="embedded-file-row-item" style="background: rgba(255,255,255,0.04);">
+                            <div>
+                                <span class="ext-badge ${evaluatedBadge.variant}">${evaluatedBadge.label}</span>
+                                <a href="#" class="file-anchor-link-label action-restricted-download" data-proj="${highSpotlightTarget.id}" data-url="${f.url}" data-name="${f.name}">${escapeHtml(f.name)}</a>
+                            </div>
+                            ${activeAuthenticatedUserContext && activeAuthenticatedUserContext.email === ADMIN_EMAIL ? `<span style="cursor:pointer; color:var(--text-muted);" class="action-file-delete" data-proj="${highSpotlightTarget.id}" data-file="${fKey}">✕</span>` : ''}
+                        </div>`;
+                });
+                if (spotlightFilesList.length > 3) {
+                    spotlightFilesHtml += `<div style="text-align:left; font-size:0.75rem; color:var(--text-muted); padding-top:4px; cursor:pointer;" class="action-view-manifest" data-id="${highSpotlightTarget.id}">+ ${spotlightFilesList.length - 3} more files available (View Manifest) ➔</div>`;
+                }
+
                 const spotlightNode = document.createElement('div');
                 spotlightNode.className = 'spotlight-card';
                 spotlightNode.innerHTML = `
@@ -1562,10 +1559,18 @@
                             ${(highSpotlightTarget.tags || []).map(t => `<span class="project-card-badge" style="background:rgba(255,255,255,0.1);">${escapeHtml(t)}</span>`).join('')}
                         </div>
                         <p class="spotlight-desc">${escapeHtml(highSpotlightTarget.description)}</p>
-                        <div style="display:flex; gap:1rem; align-items:center;">
+                        
+                        <div class="project-embedded-files-list-container" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem; margin-bottom:1.5rem;">
+                            <div style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.5rem; font-weight:600;">Package Assets:</div>
+                            ${spotlightFilesHtml || '<div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">No source files attached.</div>'}
+                        </div>
+
+                        <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
                             <button class="btn-primary action-download-pack" data-id="${highSpotlightTarget.id}" data-zip="true">Download Package ZIP</button>
-                            <span style="font-size:0.8rem; color:var(--text-muted)">Vault Metrics: ${highSpotlightTarget.downloads || 0} pulls</span>
-                            ${activeAuthenticatedUserContext && activeAuthenticatedUserContext.email === ADMIN_EMAIL ? `<button class="btn-secondary action-admin-unpin" data-id="${highSpotlightTarget.id}" style="padding:0.4rem; font-size:0.75rem;">Unpin</button>` : ''}
+                            <button class="btn-secondary action-download-pack" data-id="${highSpotlightTarget.id}" data-zip="false">Get All Files</button>
+                            <span style="font-size:0.75rem; color:var(--accent); cursor:pointer;" class="action-view-manifest" data-id="${highSpotlightTarget.id}">All Files ➔</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted)">Pulls: ${highSpotlightTarget.downloads || 0}</span>
+                            ${activeAuthenticatedUserContext && activeAuthenticatedUserContext.email === ADMIN_EMAIL ? `<button class="btn-secondary action-admin-unpin" data-id="${highSpotlightTarget.id}" style="padding:0.4rem; font-size:0.75rem; margin-left:auto;">Unpin</button>` : ''}
                         </div>
                     </div>
                     <div class="spotlight-media">
@@ -1600,7 +1605,6 @@
                 return b.timestamp - a.timestamp;
             });
 
-            // Feature 5 Pagination Evaluation Check
             if(itemsFiltered.length > activeRenderingLimitCount) {
                 paginationLoadMoreContainer.style.display = 'flex';
             } else {
@@ -1608,7 +1612,6 @@
             }
 
             const visibleSlices = itemsFiltered.slice(0, activeRenderingLimitCount);
-
             if (visibleSlices.length === 0 && projectSpotlightRoot.children.length === 0) {
                 projectsDirectoryLiveRoot.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:4rem; color:var(--text-muted); border:1px dashed var(--border-clean); border-radius:var(--radius-lg);">No matching projects found. Clear your filters or try a different search.</div>`;
                 return;
@@ -1624,7 +1627,6 @@
                 
                 let fileRowsHtml = '';
                 filesList.slice(0, 3).forEach(([fKey, f]) => {
-                    // Feature 4 Configuration Integration Mapping
                     const evaluatedBadge = evaluateFileFormatCategory(f.name);
                     fileRowsHtml += `
                         <div class="embedded-file-row-item">
@@ -1636,7 +1638,7 @@
                         </div>`;
                 });
                 if (filesList.length > 3) {
-                    fileRowsHtml += `<div style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding-top:4px;">+ ${filesList.length - 3} more files available</div>`;
+                    fileRowsHtml += `<div style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding-top:4px; cursor:pointer;" class="action-view-manifest" data-id="${project.id}">+ ${filesList.length - 3} more files available</div>`;
                 }
 
                 const commentsArr = Object.values(project.comments || {});
@@ -1688,157 +1690,166 @@
 
                 projectsDirectoryLiveRoot.appendChild(cardNode);
             });
-
-            bindInterfaceInteractionsDelegations();
         }
 
-        function bindInterfaceInteractionsDelegations() {
-            document.querySelectorAll('.action-restricted-download').forEach(a => {
-                a.onclick = (e) => {
-                    e.preventDefault();
-                    if (a.dataset.url === "#") return;
-                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
-                    
-                    // Feature 3 Counter Call
-                    logAssetDownloadEventMetric(a.dataset.proj);
-                    
-                    const dl = document.createElement('a'); dl.href = a.dataset.url; dl.download = a.dataset.name; dl.target = '_blank'; dl.click();
-                };
-            });
+        /* Monolithic Global Event Delegation Grid (Bulletproof Runtime Fix) */
+        document.body.addEventListener('click', (e) => {
+            const restrictedDownloadBtn = e.target.closest('.action-restricted-download');
+            if (restrictedDownloadBtn) {
+                e.preventDefault();
+                if (restrictedDownloadBtn.dataset.url === "#") return;
+                if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                logAssetDownloadEventMetric(restrictedDownloadBtn.dataset.proj);
+                const dl = document.createElement('a'); 
+                dl.href = restrictedDownloadBtn.dataset.url; 
+                dl.download = restrictedDownloadBtn.dataset.name; 
+                dl.target = '_blank'; 
+                dl.click();
+                return;
+            }
 
-            document.querySelectorAll('.action-download-pack').forEach(btn => {
-                btn.onclick = () => {
-                    if (btn.dataset.id === "default_placeholder") return;
-                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
-                    
-                    // Feature 3 Counter Trigger
-                    logAssetDownloadEventMetric(btn.dataset.id);
-                    
-                    triggerBulkDownloadSequence(btn.dataset.id, btn.dataset.zip === "true");
-                };
-            });
+            const downloadPackBtn = e.target.closest('.action-download-pack');
+            if (downloadPackBtn) {
+                if (downloadPackBtn.dataset.id === "default_placeholder") return;
+                if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                logAssetDownloadEventMetric(downloadPackBtn.dataset.id);
+                triggerBulkDownloadSequence(downloadPackBtn.dataset.id, downloadPackBtn.dataset.zip === "true");
+                return;
+            }
 
-            document.querySelectorAll('.action-toggle-favorite').forEach(btn => {
-                btn.onclick = () => {
-                    const id = btn.dataset.id;
-                    if (favoriteProjectRegistry.has(id)) favoriteProjectRegistry.delete(id);
-                    else favoriteProjectRegistry.add(id);
-                    localStorage.setItem('studio_favorite_projects', JSON.stringify(Array.from(favoriteProjectRegistry)));
-                    renderWorkspaceProjectDeckMatrix();
-                };
-            });
+            const favBtn = e.target.closest('.action-toggle-favorite');
+            if (favBtn) {
+                const id = favBtn.dataset.id;
+                if (favoriteProjectRegistry.has(id)) favoriteProjectRegistry.delete(id);
+                else favoriteProjectRegistry.add(id);
+                localStorage.setItem('studio_favorite_projects', JSON.stringify(Array.from(favoriteProjectRegistry)));
+                renderWorkspaceProjectDeckMatrix();
+                return;
+            }
 
-            document.querySelectorAll('.action-share-link').forEach(span => {
-                span.onclick = () => {
-                    navigator.clipboard.writeText(window.location.href);
-                    pushSystemMessageToast(`Portfolio link copied: ${span.dataset.title}`);
-                };
-            });
+            const shareBtn = e.target.closest('.action-share-link');
+            if (shareBtn) {
+                navigator.clipboard.writeText(window.location.href);
+                pushSystemMessageToast(`Portfolio link copied: ${shareBtn.dataset.title}`);
+                return;
+            }
 
-            document.querySelectorAll('.view-all-comments-trigger').forEach(span => {
-                span.onclick = () => launchDiscussionFeedModal(span.dataset.id);
-            });
+            const commentsTrigger = e.target.closest('.view-all-comments-trigger');
+            if (commentsTrigger) {
+                launchDiscussionFeedModal(commentsTrigger.dataset.id);
+                return;
+            }
 
-            document.querySelectorAll('.project-comment-entry-form').forEach(form => {
-                form.onsubmit = (e) => {
-                    e.preventDefault();
-                    if (form.dataset.id === "default_placeholder") { pushSystemMessageToast("Please create a live project to test live database commenting."); return; }
-                    if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
-                    const input = form.querySelector('.project-comment-input');
-                    executePostCommentPipeline(form.dataset.id, input.value.trim(), () => { input.value = ''; });
-                };
-            });
+            const manifestTrigger = e.target.closest('.action-view-manifest');
+            if (manifestTrigger) {
+                const p = internalProjectsDatabaseCache.find(x => x.id === manifestTrigger.dataset.id);
+                if (!p) return;
+                filesViewerProjectHeadlineTitle.textContent = `${p.title} — File Inventory`;
+                comprehensiveFilesPopupTargetRoot.innerHTML = '';
+                Object.values(p.files || {}).forEach(f => {
+                    const row = document.createElement('div'); row.className = 'popup-file-row-item';
+                    const internalBadge = evaluateFileFormatCategory(f.name);
+                    row.innerHTML = `<div><span class="ext-badge ${internalBadge.variant}">${internalBadge.label}</span><a href="#" class="file-anchor-link-label action-restricted-download" data-proj="${p.id}" data-url="${f.url}" data-name="${f.name}">${escapeHtml(f.name)}</a></div><span class="popup-file-size-badge">${(f.size/(1024*1024)).toFixed(2)} MB</span>`;
+                    comprehensiveFilesPopupTargetRoot.appendChild(row);
+                });
+                comprehensiveFilesViewerModalMask.classList.add('active');
+                return;
+            }
 
-            document.querySelectorAll('.action-view-manifest').forEach(span => {
-                span.onclick = () => {
-                    const p = internalProjectsDatabaseCache.find(x => x.id === span.dataset.id);
-                    if (!p) return;
-                    filesViewerProjectHeadlineTitle.textContent = `${p.title} — File Inventory`;
-                    comprehensiveFilesPopupTargetRoot.innerHTML = '';
-                    Object.values(p.files || {}).forEach(f => {
-                        const row = document.createElement('div'); row.className = 'popup-file-row-item';
-                        const internalBadge = evaluateFileFormatCategory(f.name);
-                        row.innerHTML = `<div><span class="ext-badge ${internalBadge.variant}">${internalBadge.label}</span><span class="popup-file-name-string">${escapeHtml(f.name)}</span></div><span class="popup-file-size-badge">${(f.size/(1024*1024)).toFixed(2)} MB</span>`;
-                        comprehensiveFilesPopupTargetRoot.appendChild(row);
-                    });
-                    comprehensiveFilesViewerModalMask.classList.add('active');
-                };
-            });
+            const editBtn = e.target.closest('.action-admin-edit');
+            if (editBtn) {
+                if (editBtn.dataset.id === "default_placeholder") { adminCreateProjectTriggerBtn.click(); return; }
+                const p = internalProjectsDatabaseCache.find(x => x.id === editBtn.dataset.id);
+                if (!p) return;
+                editProjectTargetIdCache.value = p.id;
+                editProjectTitleField.value = p.title;
+                editProjectDescField.value = p.description;
+                editProjectTagsField.value = (p.tags || []).join(', ');
+                editProjectModalMask.classList.add('active');
+                return;
+            }
 
-            document.querySelectorAll('.action-admin-edit').forEach(btn => {
-                btn.onclick = () => {
-                    if (btn.dataset.id === "default_placeholder") { adminCreateProjectTriggerBtn.click(); return; }
-                    const p = internalProjectsDatabaseCache.find(x => x.id === btn.dataset.id);
-                    if (!p) return;
-                    editProjectTargetIdCache.value = p.id;
-                    editProjectTitleField.value = p.title;
-                    editProjectDescField.value = p.description;
-                    editProjectTagsField.value = (p.tags || []).join(', ');
-                    editProjectModalMask.classList.add('active');
-                };
-            });
-
-            // Feature 1 Pinning Administration Callbacks
-            document.querySelectorAll('.action-admin-pin').forEach(btn => {
-                btn.onclick = async () => {
-                    if(btn.dataset.id === "default_placeholder") return;
-                    globalLoadingBlock.classList.remove('hidden');
+            const pinBtn = e.target.closest('.action-admin-pin');
+            if (pinBtn) {
+                if (pinBtn.dataset.id === "default_placeholder") return;
+                globalLoadingBlock.classList.remove('hidden');
+                (async () => {
                     try {
-                        // Unpin all other nodes to assert a singular global pinning scope instance
-                        for(let alternativeNode of internalProjectsDatabaseCache) {
-                            if(alternativeNode.featured) {
+                        for (let alternativeNode of internalProjectsDatabaseCache) {
+                            if (alternativeNode.featured) {
                                 await update(dRef(database, `workspace_projects/${alternativeNode.id}`), { featured: false });
                             }
                         }
-                        await update(dRef(database, `workspace_projects/${btn.dataset.id}`), { featured: true });
+                        await update(dRef(database, `workspace_projects/${pinBtn.dataset.id}`), { featured: true });
                         pushSystemMessageToast("Project successfully pinned to system spotlight banner.");
                     } catch(err) { pushSystemMessageToast(`Spotlight update failed: ${err.message}`); }
                     globalLoadingBlock.classList.add('hidden');
-                };
-            });
+                })();
+                return;
+            }
 
-            document.querySelectorAll('.action-admin-unpin').forEach(btn => {
-                btn.onclick = async () => {
-                    globalLoadingBlock.classList.remove('hidden');
+            const unpinBtn = e.target.closest('.action-admin-unpin');
+            if (unpinBtn) {
+                globalLoadingBlock.classList.remove('hidden');
+                (async () => {
                     try {
-                        await update(dRef(database, `workspace_projects/${btn.dataset.id}`), { featured: false });
+                        await update(dRef(database, `workspace_projects/${unpinBtn.dataset.id}`), { featured: false });
                         pushSystemMessageToast("Spotlight pin retracted.");
                     } catch(err) { console.error(err); }
                     globalLoadingBlock.classList.add('hidden');
-                }
-            });
+                })();
+                return;
+            }
 
-            document.querySelectorAll('.action-admin-delete').forEach(btn => {
-                btn.onclick = async () => {
-                    if (btn.dataset.id === "default_placeholder") return;
-                    if (confirm("Are you sure you want to completely delete this project?")) {
-                        globalLoadingBlock.classList.remove('hidden');
-                        const p = internalProjectsDatabaseCache.find(x => x.id === btn.dataset.id);
+            const deleteBtn = e.target.closest('.action-admin-delete');
+            if (deleteBtn) {
+                if (deleteBtn.dataset.id === "default_placeholder") return;
+                if (confirm("Are you sure you want to completely delete this project?")) {
+                    globalLoadingBlock.classList.remove('hidden');
+                    (async () => {
+                        const p = internalProjectsDatabaseCache.find(x => x.id === deleteBtn.dataset.id);
                         if (p && p.files) {
                             for (let f of Object.values(p.files)) { try { await deleteObject(sRef(storage, f.path)); } catch(e){} }
                         }
-                        await remove(dRef(database, `workspace_projects/${btn.dataset.id}`));
+                        await remove(dRef(database, `workspace_projects/${deleteBtn.dataset.id}`));
                         pushSystemMessageToast("Project removed successfully.");
                         globalLoadingBlock.classList.add('hidden');
-                    }
-                };
-            });
+                    })();
+                }
+                return;
+            }
 
-            document.querySelectorAll('.action-file-delete').forEach(span => {
-                span.onclick = async () => {
-                    if (span.dataset.proj === "default_placeholder") return;
-                    if (confirm("Delete this individual file?")) {
-                        globalLoadingBlock.classList.remove('hidden');
-                        const p = internalProjectsDatabaseCache.find(x => x.id === span.dataset.proj);
-                        const file = p.files[span.dataset.file];
+            const fileDeleteBtn = e.target.closest('.action-file-delete');
+            if (fileDeleteBtn) {
+                if (fileDeleteBtn.dataset.proj === "default_placeholder") return;
+                if (confirm("Delete this individual file?")) {
+                    globalLoadingBlock.classList.remove('hidden');
+                    (async () => {
+                        const p = internalProjectsDatabaseCache.find(x => x.id === fileDeleteBtn.dataset.proj);
+                        const file = p.files[fileDeleteBtn.dataset.file];
                         try { await deleteObject(sRef(storage, file.path)); } catch(e){}
-                        await remove(dRef(database, `workspace_projects/${span.dataset.proj}/files/${span.dataset.file}`));
+                        await remove(dRef(database, `workspace_projects/${fileDeleteBtn.dataset.proj}/files/${fileDeleteBtn.dataset.file}`));
                         pushSystemMessageToast("File deleted.");
                         globalLoadingBlock.classList.add('hidden');
-                    }
-                };
-            });
-        }
+                    })();
+                }
+                return;
+            }
+        });
+
+        document.body.addEventListener('submit', (e) => {
+            const commentForm = e.target.closest('.project-comment-entry-form');
+            if (commentForm) {
+                e.preventDefault();
+                if (commentForm.dataset.id === "default_placeholder") { 
+                    pushSystemMessageToast("Please create a live project to test live database commenting."); 
+                    return; 
+                }
+                if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                const input = commentForm.querySelector('.project-comment-input');
+                executePostCommentPipeline(commentForm.dataset.id, input.value.trim(), () => { input.value = ''; });
+            }
+        });
 
         function launchDiscussionFeedModal(projectId) {
             const project = internalProjectsDatabaseCache.find(x => x.id === projectId);
@@ -1894,14 +1905,17 @@
             });
         };
 
+        /* Re-engineered Download Engine (With Multi-Threaded Staggered Sequential Fallback) */
         async function triggerBulkDownloadSequence(projectId, zipIt) {
             const project = internalProjectsDatabaseCache.find(x => x.id === projectId);
             if (!project || !project.files) return;
             const fileList = Object.values(project.files);
 
             if (!zipIt) {
-                fileList.forEach(f => {
-                    const a = document.createElement('a'); a.href = f.url; a.download = f.name; a.target = '_blank'; a.click();
+                fileList.forEach((f, idx) => {
+                    setTimeout(() => {
+                        const a = document.createElement('a'); a.href = f.url; a.download = f.name; a.target = '_blank'; a.click();
+                    }, idx * 300);
                 });
                 return;
             }
@@ -1911,15 +1925,31 @@
                 const zip = new JSZip();
                 for (const file of fileList) {
                     const res = await fetch(file.url);
-                    if (!res.ok) throw new Error();
+                    if (!res.ok) throw new Error("Network response error during streaming compilation.");
                     zip.file(file.name, await res.blob());
                 }
                 const blob = await zip.generateAsync({ type: 'blob' });
                 const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
                 a.download = `${project.title.replace(/[^a-zA-Z0-9]/g, '_')}_assets.zip`;
                 a.click();
-                pushSystemMessageToast("ZIP download started successfully.");
-            } catch(e) { pushSystemMessageToast("Error generating compressed ZIP package."); }
+                pushSystemMessageToast("ZIP package successfully compiled and sent.");
+            } catch(e) {
+                console.warn("JSZip Stream Refused via Bucket Rules (CORS). Activating safe file-by-file extraction sequence...", e);
+                pushSystemMessageToast("Cloud Storage CORS restriction caught. Triggering sequential multi-file extraction...");
+                
+                // Fallback Engine: Stagger loops at 350ms to cross browser security block boundaries
+                fileList.forEach((f, index) => {
+                    setTimeout(() => {
+                        const fallbackAnchor = document.createElement('a');
+                        fallbackAnchor.href = f.url;
+                        fallbackAnchor.download = f.name;
+                        fallbackAnchor.target = '_blank';
+                        document.body.appendChild(fallbackAnchor);
+                        fallbackAnchor.click();
+                        fallbackAnchor.remove();
+                    }, index * 350);
+                });
+            }
             globalLoadingBlock.classList.add('hidden');
         }
 
@@ -1928,7 +1958,6 @@
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // DRAG AND DROP INITIALIZATION 
         const dropZone = document.getElementById('project-drop-zone');
         if(dropZone) {
             const dropZoneBox = dropZone.querySelector('.drop-zone-box');
@@ -1939,11 +1968,9 @@
                 e.preventDefault();
                 dropZoneBox.classList.add('dragover');
             });
-
             dropZoneBox.addEventListener('dragleave', () => {
                 dropZoneBox.classList.remove('dragover');
             });
-
             dropZoneInput.addEventListener('change', () => {
                 dropZoneBox.classList.remove('dragover');
                 if (dropZoneInput.files.length > 0) {
