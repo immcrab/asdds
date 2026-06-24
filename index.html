@@ -20,8 +20,11 @@
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --border-clean: rgba(255, 255, 255, 0.08);
+            
+            /* Dynamic Accent Overrides */
             --accent: #38bdf8;
             --accent-glow: rgba(56, 189, 248, 0.15);
+            
             --accent-dark: #0b0f17;
             --success: #34d399;
             --transition-speed: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,8 +43,8 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-base);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.07) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.03) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, var(--accent-glow) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255,255,255,0.01) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
@@ -108,6 +111,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 600;
+            transition: color var(--transition-speed);
         }
 
         .header-search-hub {
@@ -229,7 +233,7 @@
         }
 
         .hero-banner {
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -309,7 +313,7 @@
         }
 
         .tag-chip:hover, .tag-chip.active {
-            background: rgba(56, 189, 248, 0.1);
+            background: var(--accent-glow);
             color: var(--accent);
             border-color: rgba(56, 189, 248, 0.3);
         }
@@ -318,6 +322,76 @@
             font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 0.5rem;
+        }
+
+        /* Feature 1: Featured Spotlight Layout */
+        .spotlight-container-wrapper {
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .spotlight-card {
+            background: linear-gradient(135deg, rgba(19, 28, 46, 0.95) 0%, rgba(11, 15, 23, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; width: 300px; height: 300px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .spotlight-badge {
+            position: absolute;
+            top: 1.5rem;
+            left: 2.5rem;
+            background: linear-gradient(90deg, var(--accent) 0%, #a855f7 100%);
+            color: var(--bg-base);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .spotlight-meta h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-top: 1rem;
+        }
+
+        .spotlight-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .spotlight-media {
+            width: 100%;
+            height: 320px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-clean);
+            overflow: hidden;
+            background: #090d16;
+        }
+
+        .spotlight-img {
+            width: 100%; height: 100%; object-fit: cover;
         }
 
         /* Project Grid */
@@ -443,7 +517,7 @@
         }
 
         .favorite-active {
-            background: rgba(56, 189, 248, 0.1) !important;
+            background: var(--accent-glow) !important;
             color: var(--accent) !important;
             border-color: rgba(56, 189, 248, 0.2) !important;
         }
@@ -467,16 +541,37 @@
             font-size: 0.8rem;
         }
 
+        /* Feature 4: Intelligent File Badge Styling */
+        .ext-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.1rem 0.35rem;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+            text-transform: uppercase;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .ext-img  { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .ext-zip  { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+        .ext-pdf  { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .ext-doc  { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+        .ext-code { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+        .ext-gen  { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+
         .file-anchor-link-label {
-            color: var(--accent);
+            color: var(--text-primary);
             text-decoration: none;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 80%;
+            max-width: 75%;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .file-anchor-link-label:hover {
+            color: var(--accent);
             text-decoration: underline;
         }
 
@@ -548,8 +643,21 @@
             margin-top: 1rem;
         }
 
+        /* ADMIN OVERRIDES */
+        .project-card-admin-action-deck,
+        .action-file-delete {
+            display: none !important;
+        }
+
+        body.is-admin .project-card-admin-action-deck {
+            display: flex !important;
+        }
+
+        body.is-admin .action-file-delete {
+            display: inline !important;
+        }
+
         .project-card-admin-action-deck {
-            display: flex;
             gap: 0.5rem;
             margin-top: 0.75rem;
             border-top: 1px solid var(--border-clean);
@@ -662,6 +770,39 @@
         textarea.input-element-field {
             min-height: 100px;
             resize: vertical;
+        }
+
+        /* Drag and Drop Styling */
+        .drop-zone-box {
+            border: 2px dashed var(--border-clean);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.02);
+            transition: var(--transition-speed);
+            position: relative;
+        }
+
+        .drop-zone-box:hover, .drop-zone-box.dragover {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .drop-zone-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .file-hidden {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
 
         .popup-comprehensive-files-grid, .popup-comments-list-frame {
@@ -803,6 +944,14 @@
             animation: spin 0.8s linear infinite;
         }
 
+        /* Feature 5: Pagination Action Button styling */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -811,6 +960,9 @@
             header { padding: 0 1rem; }
             .header-search-hub { display: none; }
             main { padding: 100px 1rem 40px; }
+            .spotlight-card { grid-template-columns: 1fr; padding: 1.5rem; gap: 1.5rem; }
+            .spotlight-badge { left: 1.5rem; }
+            .spotlight-media { height: 200px; }
             .projects-grid-feed { grid-template-columns: 1fr; }
         }
     </style>
@@ -864,6 +1016,8 @@
             <div class="tag-filters-bar" id="tag-filter-chip-bar"></div>
         </section>
 
+        <div class="spotlight-container-wrapper" id="project-spotlight-root"></div>
+
         <div class="profile-context-dropdown-panel" id="user-profile-context-dropdown">
             <div class="dropdown-identity-email-string" id="user-dropdown-email-label">user@domain.com</div>
             <button class="btn-secondary" id="trigger-logout-sequence-btn" style="width: 100%; justify-content: center;">Sign Out</button>
@@ -872,10 +1026,14 @@
         <section class="dashboard-canvas">
             <div class="dashboard-control-header">
                 <h2 class="dashboard-view-title">Project Directory</h2>
-                <button class="btn-primary" id="admin-create-project-trigger-btn">Create New Project</button>
+                <button class="btn-primary" id="admin-create-project-trigger-btn" style="display: none;">Create New Project</button>
             </div>
 
             <div class="projects-grid-feed" id="projects-directory-live-root"></div>
+            
+            <div class="pagination-container" id="pagination-load-more-container" style="display: none;">
+                <button class="btn-secondary" id="load-more-action-trigger-btn" style="padding: 0.8rem 2rem;">Load More Assets</button>
+            </div>
         </section>
     </main>
 
@@ -900,10 +1058,15 @@
                     <label for="new-project-tags-field">Tags (separated by commas)</label>
                     <input type="text" id="new-project-tags-field" class="input-element-field" placeholder="graphics, UI, video">
                 </div>
-                <div class="input-form-control-block">
-                    <label for="new-project-files-field">Upload Asset Files</label>
-                    <input type="file" id="new-project-files-field" class="input-element-field" multiple required>
+                
+                <div class="input-form-control-block drop-zone-container" id="project-drop-zone">
+                    <label>Upload Asset Files</label>
+                    <div class="drop-zone-box">
+                        <span class="drop-zone-text">Drag & drop files here or click to browse</span>
+                        <input type="file" id="new-project-files-field" class="input-element-field file-hidden" multiple required>
+                    </div>
                 </div>
+
                 <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Save & Launch Project</button>
             </form>
         </div>
@@ -972,7 +1135,18 @@
                     <label for="settings-avatar-url-field">Custom Avatar Image URL</label>
                     <input type="text" id="settings-avatar-url-field" class="input-element-field" placeholder="https://images.unsplash.com/.../photo" autocomplete="off">
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Update Avatar</button>
+                
+                <div class="input-form-control-block">
+                    <label for="settings-accent-theme-field">Workspace Color Accent</label>
+                    <select id="settings-accent-theme-field" class="input-element-field" style="background-color:#131c2e; border: 1px solid var(--border-clean);">
+                        <option value="#38bdf8">Cyber Cyan (Default)</option>
+                        <option value="#10b981">Emerald Neo</option>
+                        <option value="#f97316">Sunset Orange</option>
+                        <option value="#a855f7">Velvet Orchid</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Update Customizations</button>
             </form>
         </div>
     </div>
@@ -985,6 +1159,8 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
         import { getDatabase, ref as dRef, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const ADMIN_EMAIL = "imcrabfr@gmail.com"; 
 
         const firebaseConfig = {
             apiKey: "AIzaSyDJ2QeH6T4bjKk1fXdfPTNJAD2lAjZXZwk",
@@ -1008,6 +1184,10 @@
         let systemSearchQueryPhrase = "";
         let activeTagFilter = "";
         let currentProjectSortMode = "newest";
+        
+        // Feature 5 Pagination Index Trackers
+        let activeRenderingLimitCount = 6;
+
         const favoriteProjectRegistry = new Set(JSON.parse(localStorage.getItem('studio_favorite_projects') || '[]'));
 
         const globalLoadingBlock = document.getElementById('global-loading-block');
@@ -1024,6 +1204,12 @@
         const clearTagFilterBtn = document.getElementById('clear-tag-filter');
         const dashboardStatsLine = document.getElementById('dashboard-stats-line');
         const triggerSettingsPanelBtn = document.getElementById('trigger-settings-panel-btn');
+
+        // Feature UI Targets
+        const projectSpotlightRoot = document.getElementById('project-spotlight-root');
+        const paginationLoadMoreContainer = document.getElementById('pagination-load-more-container');
+        const loadMoreActionTriggerBtn = document.getElementById('load-more-action-trigger-btn');
+        const settingsAccentThemeField = document.getElementById('settings-accent-theme-field');
 
         const createProjectModalMask = document.getElementById('create-project-modal-mask');
         const projectCreationExecutionForm = document.getElementById('project-creation-execution-form');
@@ -1055,6 +1241,45 @@
         const settingsAvatarUrlField = document.getElementById('settings-avatar-url-field');
         const systemNotificationToastDeck = document.getElementById('system-notification-toast-deck');
 
+        // Feature 2: Bootloader Style Hook
+        (function initialStyleEvaluation() {
+            const preservedColor = localStorage.getItem('studio_ui_accent_hex') || '#38bdf8';
+            document.documentElement.style.setProperty('--accent', preservedColor);
+            
+            // Generate clean reactive translucent overlay calculations
+            const parsedGlowValue = preservedColor.replace('#', '');
+            const numVal = parseInt(parsedGlowValue, 16);
+            const r = (numVal >> 16) & 255; const g = (numVal >> 8) & 255; const b = numVal & 255;
+            document.documentElement.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.15)`);
+        })();
+
+        // Feature 4 Extension Evaluator
+        function evaluateFileFormatCategory(filenameString) {
+            if(!filenameString) return { label: 'FILE', variant: 'ext-gen' };
+            const computedExt = filenameString.split('.').pop().toLowerCase();
+            
+            if(['png','jpg','jpeg','gif','svg','webp','tiff'].includes(computedExt)) return { label: 'IMG', variant: 'ext-img' };
+            if(['zip','rar','tar','gz','7z','pkg'].includes(computedExt)) return { label: 'ZIP', variant: 'ext-zip' };
+            if(['pdf'].includes(computedExt)) return { label: 'PDF', variant: 'ext-pdf' };
+            if(['doc','docx','txt','md','rtf','pages'].includes(computedExt)) return { label: 'DOC', variant: 'ext-doc' };
+            if(['html','css','js','ts','json','py','sh','go'].includes(computedExt)) return { label: 'CODE', variant: 'ext-code' };
+            return { label: computedExt.substring(0,4).toUpperCase(), variant: 'ext-gen' };
+        }
+
+        // Feature 3 Live Database Logger Sync
+        async function logAssetDownloadEventMetric(targetProjectId) {
+            if(targetProjectId === "default_placeholder") return;
+            try {
+                const targetRecord = internalProjectsDatabaseCache.find(item => item.id === targetProjectId);
+                const explicitBaseCount = (targetRecord && targetRecord.downloads) ? parseInt(targetRecord.downloads) : 0;
+                await update(dRef(database, `workspace_projects/${targetProjectId}`), {
+                    downloads: explicitBaseCount + 1
+                });
+            } catch(error) {
+                console.warn("Failed tracking metric upload context:", error);
+            }
+        }
+
         function pushSystemMessageToast(messageString) {
             const toastNode = document.createElement('div');
             toastNode.className = 'toast-banner-node';
@@ -1083,12 +1308,23 @@
                 headerAuthGatewayBtn.style.display = 'none';
                 userProfileAvatarNode.style.display = 'block';
                 triggerSettingsPanelBtn.style.display = 'flex';
+
+                if (user.email === ADMIN_EMAIL) {
+                    adminCreateProjectTriggerBtn.style.display = 'inline-flex';
+                    document.body.classList.add('is-admin');
+                } else {
+                    adminCreateProjectTriggerBtn.style.display = 'none';
+                    document.body.classList.remove('is-admin');
+                }
+
             } else {
                 activeAuthenticatedUserContext = null;
                 headerAuthGatewayBtn.style.display = 'block';
                 userProfileAvatarNode.style.display = 'none';
                 triggerSettingsPanelBtn.style.display = 'none';
                 userProfileContextDropdown.classList.remove('active');
+                adminCreateProjectTriggerBtn.style.display = 'none';
+                document.body.classList.remove('is-admin');
             }
             renderWorkspaceProjectDeckMatrix();
             globalLoadingBlock.classList.add('hidden');
@@ -1108,7 +1344,6 @@
                 try {
                     await signOut(auth);
                     pushSystemMessageToast("Signed out successfully.");
-                    // Ensure UI updates immediately
                     userProfileContextDropdown.classList.remove('active');
                 } catch (err) {
                     pushSystemMessageToast(`Sign out failed: ${err.message}`);
@@ -1133,6 +1368,7 @@
         triggerSettingsPanelBtn.addEventListener('click', () => {
             const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
             settingsAvatarUrlField.value = localStorage.getItem(cacheKey) || "";
+            settingsAccentThemeField.value = localStorage.getItem('studio_ui_accent_hex') || '#38bdf8';
             workspaceSettingsModalMask.classList.add('active');
         });
         closeSettingsModalBtn.addEventListener('click', () => workspaceSettingsModalMask.classList.remove('active'));
@@ -1141,11 +1377,24 @@
             e.preventDefault();
             const urlString = settingsAvatarUrlField.value.trim();
             const cacheKey = `studio_avatar_override_${activeAuthenticatedUserContext.uid}`;
+            
             if (urlString) localStorage.setItem(cacheKey, urlString);
             else localStorage.removeItem(cacheKey);
+            
+            // Feature 2 Accent Execution Layer
+            const assignedColorValue = settingsAccentThemeField.value;
+            localStorage.setItem('studio_ui_accent_hex', assignedColorValue);
+            document.documentElement.style.setProperty('--accent', assignedColorValue);
+            
+            const rawHexNoHash = assignedColorValue.replace('#', '');
+            const bigInt = parseInt(rawHexNoHash, 16);
+            const rgbR = (bigInt >> 16) & 255; const rgbG = (bigInt >> 8) & 255; const rgbB = bigInt & 255;
+            document.documentElement.style.setProperty('--accent-glow', `rgba(${rgbR}, ${rgbG}, ${rgbB}, 0.15)`);
+
             reconcileUserVisualProfilesData();
             workspaceSettingsModalMask.classList.remove('active');
-            pushSystemMessageToast("Profile settings saved successfully.");
+            pushSystemMessageToast("Profile modifications synchronized.");
+            renderWorkspaceProjectDeckMatrix();
         });
 
         projectCreationExecutionForm.addEventListener('submit', async (e) => {
@@ -1180,11 +1429,13 @@
                 }
 
                 await set(dRef(database, `workspace_projects/${projectUniqueId}`), {
-                    id: projectUniqueId, title, description, timestamp: Date.now(), files: fileRecordsDictionary, thumbnail: thumbnailRecord, tags, comments: {}
+                    id: projectUniqueId, title, description, timestamp: Date.now(), files: fileRecordsDictionary, thumbnail: thumbnailRecord, tags, comments: {}, downloads: 0, featured: false
                 });
 
                 pushSystemMessageToast("Project successfully uploaded and live.");
                 projectCreationExecutionForm.reset();
+                document.querySelector('#project-drop-zone .drop-zone-text').textContent = "Drag & drop files here or click to browse";
+                document.querySelector('#project-drop-zone .drop-zone-text').style.color = "var(--text-secondary)";
             } catch (err) {
                 pushSystemMessageToast(`Upload Error: ${err.message}`);
             } finally {
@@ -1241,7 +1492,6 @@
             const incomingDataBlock = snapshot.val();
             internalProjectsDatabaseCache = incomingDataBlock ? Object.values(incomingDataBlock) : [];
             
-            // If the database is entirely empty when uploaded, generate a fallback placeholder project so it always shows content
             if (internalProjectsDatabaseCache.length === 0) {
                 internalProjectsDatabaseCache = [{
                     id: "default_placeholder",
@@ -1250,7 +1500,9 @@
                     timestamp: Date.now(),
                     tags: ["studio", "assets"],
                     files: { "f1": { name: "demo-style-guide.pdf", size: 4500000, url: "#" } },
-                    comments: {}
+                    comments: {},
+                    downloads: 0,
+                    featured: false
                 }];
             }
 
@@ -1260,6 +1512,7 @@
 
         projectSearchField.addEventListener('input', (e) => {
             systemSearchQueryPhrase = e.target.value.toLowerCase().trim();
+            activeRenderingLimitCount = 6; // Reset page view counts on search actions
             renderWorkspaceProjectDeckMatrix();
         });
 
@@ -1270,18 +1523,57 @@
 
         clearTagFilterBtn.addEventListener('click', () => {
             activeTagFilter = "";
+            activeRenderingLimitCount = 6;
+            renderWorkspaceProjectDeckMatrix();
+        });
+
+        // Feature 5 Trigger Connection
+        loadMoreActionTriggerBtn.addEventListener('click', () => {
+            activeRenderingLimitCount += 6;
             renderWorkspaceProjectDeckMatrix();
         });
 
         function renderWorkspaceProjectDeckMatrix() {
             projectsDirectoryLiveRoot.innerHTML = '';
+            projectSpotlightRoot.innerHTML = '';
 
+            // Filter Matrix Strategy Logic 
             let itemsFiltered = internalProjectsDatabaseCache.filter(project => {
                 const nameMatches = project.title.toLowerCase().includes(systemSearchQueryPhrase);
                 const descMatches = project.description.toLowerCase().includes(systemSearchQueryPhrase);
                 const fileMatches = project.files && Object.values(project.files).some(f => f.name.toLowerCase().includes(systemSearchQueryPhrase));
                 return (nameMatches || descMatches || fileMatches) && (!activeTagFilter || (project.tags || []).includes(activeTagFilter));
             });
+
+            // Feature 1 Extraction Filter Context
+            const highSpotlightTarget = itemsFiltered.find(item => item.featured === true);
+            if(highSpotlightTarget && !systemSearchQueryPhrase && !activeTagFilter) {
+                // Remove spotlight item from standard grid array lists to avoid visual redundancy
+                itemsFiltered = itemsFiltered.filter(node => node.id !== highSpotlightTarget.id);
+                
+                const filesSlice = Object.values(highSpotlightTarget.files || {});
+                const spotlightNode = document.createElement('div');
+                spotlightNode.className = 'spotlight-card';
+                spotlightNode.innerHTML = `
+                    <div class="spotlight-badge">Featured Premium Asset</div>
+                    <div class="spotlight-meta">
+                        <h2>${escapeHtml(highSpotlightTarget.title)}</h2>
+                        <div class="project-card-badge-row" style="margin-bottom:1rem;">
+                            ${(highSpotlightTarget.tags || []).map(t => `<span class="project-card-badge" style="background:rgba(255,255,255,0.1);">${escapeHtml(t)}</span>`).join('')}
+                        </div>
+                        <p class="spotlight-desc">${escapeHtml(highSpotlightTarget.description)}</p>
+                        <div style="display:flex; gap:1rem; align-items:center;">
+                            <button class="btn-primary action-download-pack" data-id="${highSpotlightTarget.id}" data-zip="true">Download Package ZIP</button>
+                            <span style="font-size:0.8rem; color:var(--text-muted)">Vault Metrics: ${highSpotlightTarget.downloads || 0} pulls</span>
+                            ${activeAuthenticatedUserContext && activeAuthenticatedUserContext.email === ADMIN_EMAIL ? `<button class="btn-secondary action-admin-unpin" data-id="${highSpotlightTarget.id}" style="padding:0.4rem; font-size:0.75rem;">Unpin</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="spotlight-media">
+                        ${highSpotlightTarget.thumbnail ? `<img src="${escapeHtml(highSpotlightTarget.thumbnail.url)}" class="spotlight-img" alt="Hero display art">` : `<div class="no-thumbnail-placeholder">Widescreen Graphic Pipeline Active</div>`}
+                    </div>
+                `;
+                projectSpotlightRoot.appendChild(spotlightNode);
+            }
 
             const allTags = new Set();
             internalProjectsDatabaseCache.forEach(p => (p.tags || []).forEach(t => allTags.add(t)));
@@ -1290,7 +1582,7 @@
                 const chip = document.createElement('button');
                 chip.className = 'tag-chip' + (activeTagFilter === tag ? ' active' : '');
                 chip.textContent = tag;
-                chip.onclick = () => { activeTagFilter = activeTagFilter === tag ? '' : tag; renderWorkspaceProjectDeckMatrix(); };
+                chip.onclick = () => { activeTagFilter = activeTagFilter === tag ? '' : tag; activeRenderingLimitCount = 6; renderWorkspaceProjectDeckMatrix(); };
                 tagFilterChipBar.appendChild(chip);
             });
 
@@ -1308,12 +1600,21 @@
                 return b.timestamp - a.timestamp;
             });
 
-            if (itemsFiltered.length === 0) {
+            // Feature 5 Pagination Evaluation Check
+            if(itemsFiltered.length > activeRenderingLimitCount) {
+                paginationLoadMoreContainer.style.display = 'flex';
+            } else {
+                paginationLoadMoreContainer.style.display = 'none';
+            }
+
+            const visibleSlices = itemsFiltered.slice(0, activeRenderingLimitCount);
+
+            if (visibleSlices.length === 0 && projectSpotlightRoot.children.length === 0) {
                 projectsDirectoryLiveRoot.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:4rem; color:var(--text-muted); border:1px dashed var(--border-clean); border-radius:var(--radius-lg);">No matching projects found. Clear your filters or try a different search.</div>`;
                 return;
             }
 
-            itemsFiltered.forEach(project => {
+            visibleSlices.forEach(project => {
                 const cardNode = document.createElement('div');
                 cardNode.className = 'project-card-node';
                 
@@ -1323,9 +1624,14 @@
                 
                 let fileRowsHtml = '';
                 filesList.slice(0, 3).forEach(([fKey, f]) => {
+                    // Feature 4 Configuration Integration Mapping
+                    const evaluatedBadge = evaluateFileFormatCategory(f.name);
                     fileRowsHtml += `
                         <div class="embedded-file-row-item">
-                            <a href="#" class="file-anchor-link-label action-restricted-download" data-url="${f.url}" data-name="${f.name}">${escapeHtml(f.name)}</a>
+                            <div>
+                                <span class="ext-badge ${evaluatedBadge.variant}">${evaluatedBadge.label}</span>
+                                <a href="#" class="file-anchor-link-label action-restricted-download" data-proj="${project.id}" data-url="${f.url}" data-name="${f.name}">${escapeHtml(f.name)}</a>
+                            </div>
                             <span style="cursor:pointer; color:var(--text-muted);" class="action-file-delete" data-proj="${project.id}" data-file="${fKey}">✕</span>
                         </div>`;
                 });
@@ -1351,7 +1657,7 @@
                         <div class="project-card-action-row">
                             <button class="btn-secondary action-toggle-favorite ${favoriteProjectRegistry.has(project.id) ? 'favorite-active' : ''}" data-id="${project.id}">Bookmark</button>
                             <button class="btn-secondary action-download-pack" data-id="${project.id}" data-zip="false">Get Files</button>
-                            <button class="btn-secondary action-download-pack" data-id="${project.id}" data-zip="true">Download ZIP</button>
+                            <button class="btn-secondary action-download-pack" data-id="${project.id}" data-zip="true">ZIP Pack</button>
                         </div>
 
                         <div class="project-embedded-files-list-container">${fileRowsHtml || '<div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">No source files pinned to this project.</div>'}</div>
@@ -1369,12 +1675,13 @@
                         </div>
 
                         <div class="card-metrics-footer">
-                            <span>SIZE: ${projectSizeMb} MB</span>
+                            <span>SIZE: ${projectSizeMb} MB • PULLS: ${project.downloads || 0}</span>
                             <span style="color:var(--accent); cursor:pointer;" class="action-share-link" data-title="${escapeHtml(project.title)}">Share Link</span>
                         </div>
 
                         <div class="project-card-admin-action-deck">
-                            <button class="btn-secondary action-admin-edit" data-id="${project.id}">Edit Project</button>
+                            <button class="btn-secondary action-admin-edit" data-id="${project.id}">Edit Details</button>
+                            <button class="btn-secondary action-admin-pin" data-id="${project.id}" style="color:var(--accent); font-weight:700;">Spotlight Pin</button>
                             <button class="btn-secondary action-admin-delete" data-id="${project.id}" style="color:#f87171;">Delete</button>
                         </div>
                     </div>`;
@@ -1391,6 +1698,10 @@
                     e.preventDefault();
                     if (a.dataset.url === "#") return;
                     if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                    
+                    // Feature 3 Counter Call
+                    logAssetDownloadEventMetric(a.dataset.proj);
+                    
                     const dl = document.createElement('a'); dl.href = a.dataset.url; dl.download = a.dataset.name; dl.target = '_blank'; dl.click();
                 };
             });
@@ -1399,6 +1710,10 @@
                 btn.onclick = () => {
                     if (btn.dataset.id === "default_placeholder") return;
                     if (!activeAuthenticatedUserContext) { forceAuthenticationChallenge(); return; }
+                    
+                    // Feature 3 Counter Trigger
+                    logAssetDownloadEventMetric(btn.dataset.id);
+                    
                     triggerBulkDownloadSequence(btn.dataset.id, btn.dataset.zip === "true");
                 };
             });
@@ -1442,7 +1757,8 @@
                     comprehensiveFilesPopupTargetRoot.innerHTML = '';
                     Object.values(p.files || {}).forEach(f => {
                         const row = document.createElement('div'); row.className = 'popup-file-row-item';
-                        row.innerHTML = `<span class="popup-file-name-string">${escapeHtml(f.name)}</span><span class="popup-file-size-badge">${(f.size/(1024*1024)).toFixed(2)} MB</span>`;
+                        const internalBadge = evaluateFileFormatCategory(f.name);
+                        row.innerHTML = `<div><span class="ext-badge ${internalBadge.variant}">${internalBadge.label}</span><span class="popup-file-name-string">${escapeHtml(f.name)}</span></div><span class="popup-file-size-badge">${(f.size/(1024*1024)).toFixed(2)} MB</span>`;
                         comprehensiveFilesPopupTargetRoot.appendChild(row);
                     });
                     comprehensiveFilesViewerModalMask.classList.add('active');
@@ -1460,6 +1776,36 @@
                     editProjectTagsField.value = (p.tags || []).join(', ');
                     editProjectModalMask.classList.add('active');
                 };
+            });
+
+            // Feature 1 Pinning Administration Callbacks
+            document.querySelectorAll('.action-admin-pin').forEach(btn => {
+                btn.onclick = async () => {
+                    if(btn.dataset.id === "default_placeholder") return;
+                    globalLoadingBlock.classList.remove('hidden');
+                    try {
+                        // Unpin all other nodes to assert a singular global pinning scope instance
+                        for(let alternativeNode of internalProjectsDatabaseCache) {
+                            if(alternativeNode.featured) {
+                                await update(dRef(database, `workspace_projects/${alternativeNode.id}`), { featured: false });
+                            }
+                        }
+                        await update(dRef(database, `workspace_projects/${btn.dataset.id}`), { featured: true });
+                        pushSystemMessageToast("Project successfully pinned to system spotlight banner.");
+                    } catch(err) { pushSystemMessageToast(`Spotlight update failed: ${err.message}`); }
+                    globalLoadingBlock.classList.add('hidden');
+                };
+            });
+
+            document.querySelectorAll('.action-admin-unpin').forEach(btn => {
+                btn.onclick = async () => {
+                    globalLoadingBlock.classList.remove('hidden');
+                    try {
+                        await update(dRef(database, `workspace_projects/${btn.dataset.id}`), { featured: false });
+                        pushSystemMessageToast("Spotlight pin retracted.");
+                    } catch(err) { console.error(err); }
+                    globalLoadingBlock.classList.add('hidden');
+                }
             });
 
             document.querySelectorAll('.action-admin-delete').forEach(btn => {
@@ -1580,6 +1926,34 @@
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // DRAG AND DROP INITIALIZATION 
+        const dropZone = document.getElementById('project-drop-zone');
+        if(dropZone) {
+            const dropZoneBox = dropZone.querySelector('.drop-zone-box');
+            const dropZoneInput = document.getElementById('new-project-files-field');
+            const dropZoneText = dropZone.querySelector('.drop-zone-text');
+
+            dropZoneBox.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZoneBox.classList.add('dragover');
+            });
+
+            dropZoneBox.addEventListener('dragleave', () => {
+                dropZoneBox.classList.remove('dragover');
+            });
+
+            dropZoneInput.addEventListener('change', () => {
+                dropZoneBox.classList.remove('dragover');
+                if (dropZoneInput.files.length > 0) {
+                    dropZoneText.textContent = `${dropZoneInput.files.length} file(s) selected ready for upload.`;
+                    dropZoneText.style.color = "var(--accent)";
+                } else {
+                    dropZoneText.textContent = "Drag & drop files here or click to browse";
+                    dropZoneText.style.color = "var(--text-secondary)";
+                }
+            });
         }
     </script>
 </body>
