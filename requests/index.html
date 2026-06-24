@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Requests — Owen Studio</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Shared design variables and glassmorphism styling parameters from index.html */
+        :root {
+            --bg-base: #030712;
+            --bg-surface: rgba(17, 24, 39, 0.7);
+            --bg-card: rgba(31, 41, 55, 0.45);
+            --bg-input: rgba(255, 255, 255, 0.03);
+            --bg-hover: rgba(255, 255, 255, 0.07);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-clean: rgba(255, 255, 255, 0.06);
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.12);
+            --success: #10b981;
+            --transition-speed: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --glass-blur: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 45%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .brand-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        header {
+            position: fixed; top: 0; left: 0; right: 0; height: 80px;
+            background: rgba(3, 7, 18, 0.6); backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--border-clean);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; z-index: 1000;
+        }
+
+        .header-branding { display: flex; flex-direction: column; text-decoration: none; }
+        .brand-title { font-size: 1.35rem; color: var(--text-primary); background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-subtitle { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; margin-top: 2px; }
+        .header-utility-tray { display: flex; align-items: center; gap: 1.25rem; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, #0284c7 100%);
+            color: #fff; font-weight: 600; border: none; padding: 0.65rem 1.4rem; border-radius: var(--radius-md);
+            cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.6rem; transition: var(--transition-speed);
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4); }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04); color: var(--text-primary); border: 1px solid var(--border-clean);
+            padding: 0.65rem 1.4rem; border-radius: var(--radius-md); cursor: pointer; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 0.6rem; transition: var(--transition-speed);
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+
+        .user-identity-profile-circle { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--border-clean); cursor: pointer; object-fit: cover; }
+
+        main { padding: 140px 3rem 80px; max-width: 1300px; margin: 0 auto; }
+        .hero-banner { margin-bottom: 3.5rem; text-align: center; }
+        .hero-banner h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(to bottom right, #ffffff 20%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .hero-banner p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .requests-workspace-grid { display: grid; grid-template-columns: 1fr 1.8fr; gap: 3rem; align-items: start; }
+        
+        .form-glass-panel {
+            background: var(--bg-card); border: 1px solid var(--border-clean); padding: 2rem; border-radius: 24px;
+            backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+        .form-title { font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-primary); }
+
+        .auth-required-notice {
+            background: rgba(239, 68, 68, 0.07); border: 1px dashed rgba(239, 68, 68, 0.25);
+            padding: 1.25rem; border-radius: var(--radius-md); text-align: center; color: #f87171; font-size: 0.9rem; font-weight: 500;
+        }
+
+        .input-form-control-block { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+        .input-form-control-block label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); }
+        .input-element-field {
+            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-clean); color: var(--text-primary);
+            padding: 0.75rem 1rem; outline: none; font-family: inherit; font-size: 0.9rem; border-radius: var(--radius-md); transition: var(--transition-speed);
+        }
+        .input-element-field:focus { border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 0 0 4px var(--accent-glow); }
+        textarea.input-element-field { min-height: 110px; resize: vertical; }
+
+        .feed-column-container { display: flex; flex-direction: column; gap: 1.5rem; }
+        .request-card-node {
+            background: var(--bg-card); border: 1px solid var(--border-clean); padding: 1.75rem; border-radius: 20px;
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; transition: var(--transition-speed);
+        }
+        .request-content { flex: 1; }
+        .request-item-title { font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .request-item-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.25rem; }
+        
+        .request-meta-row { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+        
+        /* Interactive status tagging classes */
+        .status-badge { padding: 0.25rem 0.65rem; border-radius: 999px; font-weight: 700; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.04em; }
+        .status-pending { background: rgba(156, 163, 175, 0.1); color: #9ca3af; border: 1px solid rgba(156, 163, 175, 0.2); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-denied { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .status-working { background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.2); }
+
+        .upvote-action-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+        .upvote-count { font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); }
+
+        /* Dedicated Administrative Action Decks */
+        .admin-controls-panel { display: flex; gap: 0.5rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-clean); }
+        .admin-controls-panel button { padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-radius: var(--radius-sm); border: none; cursor: pointer; transition: var(--transition-speed); }
+        .btn-adm-work { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .btn-adm-work:hover { background: rgba(168, 85, 247, 0.3); }
+        .btn-adm-approve { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .btn-adm-approve:hover { background: rgba(16, 185, 129, 0.3); }
+        .btn-adm-deny { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .btn-adm-deny:hover { background: rgba(239, 68, 68, 0.3); }
+        .btn-adm-delete { background: rgba(239, 68, 68, 0.25); color: #f87171; margin-left: auto; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .btn-adm-delete:hover { background: rgba(239, 68, 68, 0.45); }
+
+        .profile-context-dropdown-panel {
+            position: absolute; top: 85px; right: 3rem; background: #0b0f19; border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg); width: 280px; padding: 1.5rem; display: none; flex-direction: column; gap: 1.25rem; z-index: 1000;
+        }
+        .profile-context-dropdown-panel.active { display: flex; }
+        .dropdown-identity-email-string { font-size: 0.85rem; color: var(--text-secondary); word-break: break-all; border-bottom: 1px solid var(--border-clean); padding-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="header-branding">
+            <span class="brand-title">Owen Studio</span>
+            <span class="brand-subtitle">Asset Hub</span>
+        </a>
+        <div class="header-utility-tray">
+            <a href="index.html" class="btn-secondary" style="text-decoration: none;">Projects</a>
+            <button class="btn-primary" id="header-auth-gateway-btn">Sign In</button>
+            <img id="user-profile-avatar-node" class="user-identity-profile-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Profile View" style="display: none;">
+        </div>
+    </header>
+
+    <div class="profile-context-dropdown-panel" id="user-profile-context-dropdown">
+        <div class="dropdown-identity-email-string" id="user-dropdown-email-label"></div>
+        <button class="btn-secondary" id="trigger-logout-sequence-btn" style="width: 100%; justify-content: center;">Sign Out</button>
+    </div>
+
+    <main>
+        <section class="hero-banner">
+            <h1>Community Request Board</h1>
+            <p>Have an asset idea? Log in to list your suggestions. Master administrators can manage implementation pipelines live.</p>
+        </section>
+
+        <div class="requests-workspace-grid">
+            <aside class="form-glass-panel">
+                <h3 class="form-title">Suggest an Asset</h3>
+                
+                <div id="form-logged-out-notice" class="auth-required-notice">
+                    You must be signed in to submit community asset requests.
+                </div>
+
+                <form id="asset-request-submission-form" style="display: none;">
+                    <div class="input-form-control-block">
+                        <label for="req-title">Asset Title</label>
+                        <input type="text" id="req-title" class="input-element-field" placeholder="e.g., Modular Sci-Fi Wall Kit" required autocomplete="off">
+                    </div>
+                    <div class="input-form-control-block">
+                        <label for="req-desc">Details / Requirements</label>
+                        <textarea id="req-desc" class="input-element-field" placeholder="Describe layout details, geometry file extension type, size..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Submit Request</button>
+                </form>
+            </aside>
+
+            <section class="feed-column-container" id="requests-live-feed-target"></section>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, update as dbUpdate, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Your exact configuration directly from index.html
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJ2QeH6T4bjKk1fXdfPTNJAD2lAjZXZwk",
+            authDomain: "scribbledev.firebaseapp.com",
+            projectId: "scribbledev",
+            storageBucket: "scribbledev.firebasestorage.app",
+            messagingSenderId: "580074888715",
+            appId: "1:580074888715:web:49c18e1770ae5b8632710e",
+            measurementId: "G-V164XBTCVL",
+            databaseURL: "https://scribbledev-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const googleOAuthProvider = new GoogleAuthProvider();
+
+        const adminEmail = "imcrabfr@gmail.com";
+        let activeAuthenticatedUserContext = null;
+        let globalRequestsCache = [];
+
+        const authBtn = document.getElementById('header-auth-gateway-btn');
+        const profileAvatar = document.getElementById('user-profile-avatar-node');
+        const profileDropdown = document.getElementById('user-profile-context-dropdown');
+        const dropdownEmailLabel = document.getElementById('user-dropdown-email-label');
+        const logoutBtn = document.getElementById('trigger-logout-sequence-btn');
+        
+        const formNotice = document.getElementById('form-logged-out-notice');
+        const requestForm = document.getElementById('asset-request-submission-form');
+        const feedContainer = document.getElementById('requests-live-feed-target');
+
+        // Dynamic State UI Switchboard
+        function handleAuthenticationUIState(user) {
+            if (user) {
+                activeAuthenticatedUserContext = user;
+                authBtn.style.display = 'none';
+                profileAvatar.style.display = 'block';
+                profileAvatar.src = user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80";
+                dropdownEmailLabel.textContent = user.email;
+                
+                formNotice.style.display = 'none';
+                requestForm.style.display = 'block';
+            } else {
+                activeAuthenticatedUserContext = null;
+                authBtn.style.display = 'inline-flex';
+                profileAvatar.style.display = 'none';
+                
+                formNotice.style.display = 'block';
+                requestForm.style.display = 'none';
+            }
+            renderFeed();
+        }
+
+        // Live Authentication Event Subscribers
+        onAuthStateChanged(auth, (user) => {
+            handleAuthenticationUIState(user);
+        });
+
+        authBtn.addEventListener('click', () => {
+            signInWithPopup(auth, googleOAuthProvider).catch((err) => {
+                alert(`Sign in failed: ${err.message}`);
+            });
+        });
+
+        profileAvatar.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                profileDropdown.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', () => {
+            profileDropdown.classList.remove('active');
+        });
+
+        // Write New Asset Suggestion Pipeline to Realtime Database
+        requestForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!activeAuthenticatedUserContext) return alert("You must be logged in!");
+
+            const title = document.getElementById('req-title').value.trim();
+            const desc = document.getElementById('req-desc').value.trim();
+
+            try {
+                // Generates and pushes data into the 'community_requests' node in RTDB
+                const requestsRef = ref(database, 'community_requests');
+                const newRequestNode = push(requestsRef);
+                await set(newRequestNode, {
+                    id: newRequestNode.key,
+                    title: title,
+                    desc: desc,
+                    status: "pending",
+                    user: activeAuthenticatedUserContext.email,
+                    upvotes: 1,
+                    timestamp: Date.now()
+                });
+                requestForm.reset();
+            } catch (err) {
+                alert(`Error saving submission to Firebase RTDB: ${err.message}`);
+            }
+        });
+
+        // Global Event Scopers for dynamic templates 
+        window.changeStatus = async function(id, newStatus) {
+            if (!activeAuthenticatedUserContext || activeAuthenticatedUserContext.email !== adminEmail) return;
+            try {
+                await dbUpdate(ref(database, `community_requests/${id}`), { status: newStatus });
+            } catch (err) {
+                alert(`Failed state update: ${err.message}`);
+            }
+        };
+
+        window.deleteRequest = async function(id) {
+            if (!activeAuthenticatedUserContext || activeAuthenticatedUserContext.email !== adminEmail) return;
+            if (confirm("Are you sure you want to completely delete this asset suggestion?")) {
+                try {
+                    await remove(ref(database, `community_requests/${id}`));
+                } catch (err) {
+                    alert(`Failed deletion: ${err.message}`);
+                }
+            }
+        };
+
+        window.upvoteRequest = async function(id) {
+            const match = globalRequestsCache.find(r => r.id === id);
+            if (!match) return;
+            const currentVotes = match.upvotes || 0;
+            try {
+                await dbUpdate(ref(database, `community_requests/${id}`), { upvotes: currentVotes + 1 });
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        // Continuous Realtime Database Listener
+        onValue(ref(database, 'community_requests'), (snapshot) => {
+            const data = snapshot.val();
+            globalRequestsCache = data ? Object.values(data) : [];
+            // Sort to ensure newest suggestions sit at top 
+            globalRequestsCache.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            renderFeed();
+        });
+
+        // Feed Rendering Engine
+        function renderFeed() {
+            feedContainer.innerHTML = "";
+
+            if (globalRequestsCache.length === 0) {
+                feedContainer.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:3rem;">No suggestions submitted yet. Be the first!</div>`;
+                return;
+            }
+
+            const isAdmin = activeAuthenticatedUserContext && activeAuthenticatedUserContext.email === adminEmail;
+
+            globalRequestsCache.forEach(req => {
+                let statusLabel = "Open Idea";
+                let statusClass = "status-pending";
+                if (req.status === 'approved') { statusLabel = "Approved"; statusClass = "status-approved"; }
+                if (req.status === 'denied') { statusLabel = "Denied"; statusClass = "status-denied"; }
+                if (req.status === 'working') { statusLabel = "Working On"; statusClass = "status-working"; }
+
+                const card = document.createElement('div');
+                card.className = "request-card-node";
+                
+                let adminControlsHTML = "";
+                if (isAdmin) {
+                    adminControlsHTML = `
+                        <div class="admin-controls-panel">
+                            <button class="btn-adm-work" onclick="changeStatus('${req.id}', 'working')">Working On</button>
+                            <button class="btn-adm-approve" onclick="changeStatus('${req.id}', 'approved')">Approve</button>
+                            <button class="btn-adm-deny" onclick="changeStatus('${req.id}', 'denied')">Deny</button>
+                            <button class="btn-adm-delete" onclick="deleteRequest('${req.id}')">Delete</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="request-content">
+                        <h4 class="request-item-title">${escapeHtml(req.title)}</h4>
+                        <p class="request-item-desc">${escapeHtml(req.desc)}</p>
+                        <div class="request-meta-row">
+                            <span class="status-badge ${statusClass}">${statusLabel}</span>
+                            <span>Suggested by: <strong>${escapeHtml(req.user)}</strong></span>
+                        </div>
+                        ${adminControlsHTML}
+                    </div>
+                    <div class="upvote-action-wrapper">
+                        <button class="btn-secondary" style="padding:0.4rem 0.6rem; font-size:0.8rem;" onclick="upvoteRequest('${req.id}')">▲</button>
+                        <span class="upvote-count">${req.upvotes || 0}</span>
+                    </div>
+                `;
+                feedContainer.appendChild(card);
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
